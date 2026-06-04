@@ -57,7 +57,11 @@ document
 
   const fullName =
     document.getElementById("fullName").value;
+const fatherName =
+document.getElementById("fatherName").value;
 
+const age =
+document.getElementById("age").value;
   const purpose =
     document.getElementById("purposeDropdown").value;
 
@@ -68,10 +72,12 @@ document
     <h2>AFFIDAVIT</h2>
 
     <p>
-    I, <b>${fullName}</b>,
-    hereby declare this affidavit
-    for <b>${purpose}</b>.
-    </p>
+I, <b>${fullName}</b>,
+S/o <b>${fatherName}</b>,
+aged <b>${age}</b> years,
+hereby declare this affidavit
+for <b>${purpose}</b>.
+</p>
 
     <p>${statement}</p>
   `;
