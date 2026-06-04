@@ -3,16 +3,65 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AGI Legal Pro V2</title>
+<title>Global Affidavit Generator Pro</title>
 
 <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
 
-<h1>AGI Legal Pro V2</h1>
+<div class="container">
 
-<p>Project initialized successfully.</p>
+<h1>Global Affidavit Generator Pro</h1>
+
+<select id="country">
+<option>India</option>
+<option>Pakistan</option>
+<option>UAE</option>
+<option>USA</option>
+<option>UK</option>
+</select>
+
+<select id="language">
+<option>English</option>
+<option>Urdu</option>
+<option>Hindi</option>
+</select>
+
+<input
+type="text"
+id="fullName"
+placeholder="Full Name">
+
+<input
+type="text"
+id="fatherName"
+placeholder="Father / Husband Name">
+
+<input
+type="number"
+id="age"
+placeholder="Age">
+
+<input
+type="text"
+id="purposeSearch"
+placeholder="Search Purpose">
+
+<select id="purposeDropdown">
+<option>Select Purpose</option>
+</select>
+
+<textarea
+id="swornStatement"
+placeholder="Sworn Statement"></textarea>
+
+<button id="generateBtn">
+Generate Affidavit
+</button>
+
+<div id="preview"></div>
+
+</div>
 
 <script src="app.js"></script>
 
