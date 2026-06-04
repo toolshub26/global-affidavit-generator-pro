@@ -1,1 +1,35 @@
 
+{
+  "Legal": [
+    "Affidavit of Truth",
+    "Sworn Statement",
+    "Name Change",
+    "Legal Heir",
+    "Witness Statement"
+  ],
+
+  "Property": [
+    "Property Transfer",
+    "Property Mutation",
+    "Rental Agreement",
+    "Tenant Verification"
+  ],
+
+  "Marriage": [
+    "Marriage Affidavit",
+    "Single Status",
+    "Divorce Declaration"
+  ],
+
+  "Education": [
+    "Gap Certificate",
+    "Character Certificate",
+    "Bonafide Certificate"
+  ],
+
+  "Banking": [
+    "Bank Account Opening",
+    "Income Proof",
+    "Loan Declaration"
+  ]
+}
