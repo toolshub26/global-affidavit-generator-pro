@@ -222,7 +222,6 @@ document.getElementById("pdfBtn")?.addEventListener("click", async () => {
     pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
     heightLeft -= pageHeight;
 
-    // ✅ Fixed: safer position calculation
     while (heightLeft > 0) {
       position = heightLeft - imgHeight;
       pdf.addPage();
@@ -283,11 +282,17 @@ if (pngBtn) {
 }
 
 /* =========================
-   THEME SWITCH
+   THEME SWITCH (with localStorage)
 ========================= */
 const themeBtn = document.getElementById("themeBtn");
 if (themeBtn) {
-  themeBtn.onclick = () => document.body.classList.toggle("light-theme");
+  themeBtn.onclick = () => {
+    document.body.classList.toggle("light-theme");
+    localStorage.setItem(
+      "theme",
+      document.body.classList.contains("light-theme") ? "light" : "dark"
+    );
+  };
 }
 
 /* =========================
@@ -297,7 +302,6 @@ function initSignaturePad() {
   const canvas = document.getElementById("signaturePad");
   if (!canvas) return;
 
-  // ✅ Prevent touch scrolling while signing
   canvas.style.touchAction = "none";
 
   canvas.width = canvas.offsetWidth || 400;
@@ -390,8 +394,7 @@ function setupHiddenPreview() {
     else document.body.appendChild(toggleBtn);
   }
 
-  // Shared state variable
-  window.previewVisible = false;  // preview starts hidden (display:none in HTML)
+  window.previewVisible = false;
   toggleBtn.textContent = "👁️ Show Preview";
 
   toggleBtn.addEventListener("click", () => {
@@ -414,8 +417,15 @@ window.addEventListener("beforeinstallprompt", (e) => {
   deferredPrompt = e;
   const installBtn = document.getElementById("installBtn");
   if (installBtn) {
-    installBtn.style.display = "block"; // or "inline-block", whatever your CSS
+    installBtn.style.display = "block";
     installBtn.disabled = false;
+  }
+});
+
+window.addEventListener("appinstalled", () => {
+  const installBtn = document.getElementById("installBtn");
+  if (installBtn) {
+    installBtn.style.display = "none";
   }
 });
 
@@ -435,9 +445,21 @@ if (installBtn) {
 }
 
 /* =========================
+   SERVICE WORKER REGISTRATION
+========================= */
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js").catch(err => console.log("SW registration failed:", err));
+}
+
+/* =========================
    INITIALIZE ALL
 ========================= */
 document.addEventListener("DOMContentLoaded", () => {
+  // Restore theme from localStorage
+  if (localStorage.getItem("theme") === "light") {
+    document.body.classList.add("light-theme");
+  }
+
   loadPurposes();
   initSignaturePad();
   setupHiddenPreview();
