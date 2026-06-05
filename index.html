@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Global Affidavit Generator Pro</title>
 
 <link rel="stylesheet" href="styles.css">
@@ -11,7 +12,27 @@
 
 <div class="container">
 
+<img src="1000072386.jpg"
+class="rotating-logo"
+alt="AGI Legal Logo">
+
 <h1>Global Affidavit Generator Pro</h1>
+
+<div class="plan-buttons">
+
+<button class="free-plan">
+FREE
+</button>
+
+<button class="pro-plan">
+PRO
+</button>
+
+<button class="premium-plan">
+PREMIUM
+</button>
+
+</div>
 
 <select id="country">
 <option>India</option>
@@ -28,19 +49,40 @@
 <option>Arabic</option>
 </select>
 
-<input type="text" id="fullName" placeholder="Full Name">
+<input
+type="text"
+id="fullName"
+placeholder="Full Name">
 
-<input type="text" id="fatherName" placeholder="Father / Husband Name">
+<input
+type="text"
+id="fatherName"
+placeholder="Father / Husband Name">
 
-<input type="number" id="age" placeholder="Age">
+<input
+type="number"
+id="age"
+placeholder="Age">
 
-<input type="text" id="state" placeholder="State / Province">
+<input
+type="text"
+id="state"
+placeholder="State / Province">
 
-<input type="text" id="district" placeholder="District / City">
+<input
+type="text"
+id="district"
+placeholder="District / City">
 
-<input type="text" id="address" placeholder="Full Address">
+<input
+type="text"
+id="address"
+placeholder="Full Address">
 
-<input type="text" id="purposeSearch" placeholder="Search Purpose">
+<input
+type="text"
+id="purposeSearch"
+placeholder="Search Purpose">
 
 <select id="purposeDropdown">
 <option>Select Purpose</option>
@@ -50,25 +92,62 @@
 id="swornStatement"
 placeholder="Sworn Statement"></textarea>
 
+<h3>📷 Upload Photo (Optional)</h3>
+
+<input
+type="file"
+id="photoUpload"
+accept="image/*">
+
+<h3>✍ Electronic Signature</h3>
+
+<canvas
+id="signaturePad"
+width="700"
+height="250">
+</canvas>
+
+<button id="clearSignature">
+Clear Signature
+</button>
+
 <button id="generateBtn">
-Generate Affidavit
+✨ Generate Affidavit
+</button>
+
+<button id="pdfBtn">
+📄 Save as PDF
+</button>
+
+<button id="pngBtn">
+🖼 Save as PNG
 </button>
 
 <button id="printBtn">
 🖨 Print
 </button>
 
-<button id="pdfBtn">
-📄 Download PDF
-</button>
-
 <button id="shareBtn">
 📤 Share
 </button>
 
-<button id="freeBtn">
-⭐ Free Version
+<button id="themeBtn">
+🌓 Theme
 </button>
+
+<button id="installBtn">
+📲 Install App
+</button>
+
+<div class="footer-links">
+
+<a href="#">Privacy</a>
+
+<a href="#">Terms</a>
+
+<a href="#">Contact</a>
+
+</div>
 
 <div id="preview"></div>
 
