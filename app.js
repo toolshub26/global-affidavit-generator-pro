@@ -99,13 +99,16 @@ function validateRequiredFields() {
 }
 
 /* =========================
-   GENERATE AFFIDAVIT (with photo & signature)
+   GENERATE AFFIDAVIT (with photo, signature & color theme)
    + Memory leak fix: revoke previous photo URL
 ========================= */
 let currentPhotoURL = null;
 
 document.getElementById("generateBtn")?.addEventListener("click", function () {
   if (!validateRequiredFields()) return;
+
+  // ✅ Get selected color theme before generating HTML
+  const affidavitColor = document.getElementById("affidavitColor")?.value || "gold";
 
   const country = document.getElementById("country").value;
   const language = document.getElementById("language").value;
@@ -167,6 +170,12 @@ document.getElementById("generateBtn")?.addEventListener("click", function () {
       Deponent Signature
     </div>
   `;
+
+  // ✅ Apply color theme: remove old theme classes, add new one
+  previewDiv.classList.remove(
+    "gold-theme", "blue-theme", "green-theme", "red-theme", "black-theme"
+  );
+  previewDiv.classList.add(affidavitColor + "-theme");
 
   // Show preview and sync toggle button
   previewDiv.style.display = "block";
