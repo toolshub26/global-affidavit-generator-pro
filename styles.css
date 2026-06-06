@@ -236,7 +236,25 @@ button:hover{
   padding-bottom:10px;
   letter-spacing:2px;
 }
+.gold-theme h2 {
+  border-bottom-color: #d4af37 !important;
+}
 
+.blue-theme h2 {
+  border-bottom-color: #2563eb !important;
+}
+
+.green-theme h2 {
+  border-bottom-color: #16a34a !important;
+}
+
+.red-theme h2 {
+  border-bottom-color: #dc2626 !important;
+}
+
+.black-theme h2 {
+  border-bottom-color: #111827 !important;
+}
 #preview p{
   font-size:16px;
   line-height:1.9;
