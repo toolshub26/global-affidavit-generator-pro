@@ -1,0 +1,17 @@
+{
+  "country": "Bahrain",
+  "templates": [
+    {
+      "title": "Name Correction Affidavit",
+      "body": "I solemnly affirm that both names belong to one and the same person."
+    },
+    {
+      "title": "Residence Affidavit",
+      "body": "I declare that I am residing at the stated address."
+    },
+    {
+      "title": "Passport Loss Affidavit",
+      "body": "I affirm that my passport has been lost and could not be recovered."
+    }
+  ]
+}
