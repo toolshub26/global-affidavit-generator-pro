@@ -1,0 +1,17 @@
+{
+  "country": "Kuwait",
+  "templates": [
+    {
+      "title": "Name Correction Affidavit",
+      "body": "I solemnly affirm that both names belong to one and the same person."
+    },
+    {
+      "title": "Residence Affidavit",
+      "body": "I hereby declare that I reside at the stated address."
+    },
+    {
+      "title": "Single Status Affidavit",
+      "body": "I affirm that I am unmarried and legally free to marry."
+    }
+  ]
+}
