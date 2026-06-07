@@ -1,0 +1,17 @@
+{
+  "country": "Oman",
+  "templates": [
+    {
+      "title": "Name Correction Affidavit",
+      "body": "I solemnly affirm that both names belong to one and the same person."
+    },
+    {
+      "title": "Residence Affidavit",
+      "body": "I declare that I reside at the address mentioned above."
+    },
+    {
+      "title": "Employment Affidavit",
+      "body": "I solemnly declare that the employment information furnished by me is true."
+    }
+  ]
+}
