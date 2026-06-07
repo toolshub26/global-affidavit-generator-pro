@@ -1,0 +1,27 @@
+{
+  "version": "1.0",
+  "name": "Global Affidavit Templates",
+  "countries": [
+    "India",
+    "Pakistan",
+    "UAE",
+    "Saudi Arabia",
+    "Qatar",
+    "Kuwait",
+    "Bahrain",
+    "Oman",
+    "United Kingdom",
+    "United States",
+    "Canada",
+    "Australia",
+    "New Zealand",
+    "South Africa",
+    "Singapore",
+    "Malaysia"
+  ],
+  "default_template": {
+    "title": "AFFIDAVIT",
+    "body": "I hereby solemnly affirm that the information provided herein is true and correct to the best of my knowledge and belief.",
+    "signature_label": "Deponent Signature"
+  }
+}
