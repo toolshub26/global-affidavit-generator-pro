@@ -1,0 +1,21 @@
+{
+  "country": "United Kingdom",
+  "templates": [
+    {
+      "title": "Name Change Affidavit",
+      "body": "I solemnly affirm that my previous and current names belong to one and the same person."
+    },
+    {
+      "title": "Address Confirmation Affidavit",
+      "body": "I hereby declare that I reside at the address stated above and the information provided is true."
+    },
+    {
+      "title": "Single Status Affidavit",
+      "body": "I affirm that I am unmarried and legally free to marry."
+    },
+    {
+      "title": "Identity Affidavit",
+      "body": "I solemnly declare that the information furnished by me is true and correct."
+    }
+  ]
+}
