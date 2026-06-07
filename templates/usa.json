@@ -1,0 +1,21 @@
+{
+  "country": "United States",
+  "templates": [
+    {
+      "title": "Name Change Affidavit",
+      "body": "I solemnly affirm that both names refer to one and the same person."
+    },
+    {
+      "title": "Single Status Affidavit",
+      "body": "I hereby declare that I am unmarried and eligible to marry."
+    },
+    {
+      "title": "Address Proof Affidavit",
+      "body": "I affirm that I currently reside at the address mentioned above."
+    },
+    {
+      "title": "Identity Affidavit",
+      "body": "I declare that the information provided by me is true and correct."
+    }
+  ]
+}
