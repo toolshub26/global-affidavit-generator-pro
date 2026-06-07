@@ -1,0 +1,21 @@
+{
+  "country": "India",
+  "templates": [
+    {
+      "title": "Name Change Affidavit",
+      "body": "I hereby solemnly affirm that my old name and new name belong to one and the same person."
+    },
+    {
+      "title": "Birth Certificate Correction",
+      "body": "I declare that the particulars mentioned herein are true and correct and request correction in official records."
+    },
+    {
+      "title": "Loss of Documents",
+      "body": "I solemnly state that the original documents have been lost and are not traceable despite best efforts."
+    },
+    {
+      "title": "Income Certificate",
+      "body": "I hereby declare that the income details furnished are true and correct."
+    }
+  ]
+}
