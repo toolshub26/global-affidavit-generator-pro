@@ -1,0 +1,25 @@
+{
+  "country": "Saudi Arabia",
+  "templates": [
+    {
+      "title": "Name Correction Affidavit",
+      "body": "I solemnly affirm that both names belong to one and the same person."
+    },
+    {
+      "title": "Residence Affidavit",
+      "body": "I hereby declare that I am residing at the stated address and the information furnished is true."
+    },
+    {
+      "title": "Passport Loss Affidavit",
+      "body": "I affirm that my passport has been lost and despite reasonable efforts it could not be recovered."
+    },
+    {
+      "title": "Employment Affidavit",
+      "body": "I solemnly declare that the employment details provided by me are true and correct."
+    },
+    {
+      "title": "Single Status Affidavit",
+      "body": "I hereby affirm that I am unmarried and legally free to marry."
+    }
+  ]
+}
