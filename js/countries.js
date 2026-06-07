@@ -1,12 +1,12 @@
 const countries = [
-  "India",
-  "Pakistan",
-  "USA",
-  "UK",
-  "Saudi Arabia",
-  "UAE",
-  "Qatar",
-  "Oman",
-  "Kuwait",
-  "Bahrain"
+  "india",
+  "pakistan",
+  "usa",
+  "uk",
+  "saudi",
+  "uae",
+  "qatar",
+  "oman",
+  "kuwait",
+  "bahrain"
 ];
