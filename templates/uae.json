@@ -1,0 +1,21 @@
+{
+  "country": "United Arab Emirates",
+  "templates": [
+    {
+      "title": "Salary Certificate Affidavit",
+      "body": "I hereby declare that the salary information furnished by me is true and correct."
+    },
+    {
+      "title": "Passport Loss Affidavit",
+      "body": "I solemnly affirm that my passport has been lost and despite all efforts it could not be recovered."
+    },
+    {
+      "title": "Residence Affidavit",
+      "body": "I declare that I am residing at the stated address and the information provided is true."
+    },
+    {
+      "title": "Name Correction Affidavit",
+      "body": "I affirm that both names belong to one and the same person."
+    }
+  ]
+}
