@@ -1,0 +1,21 @@
+{
+  "country": "Pakistan",
+  "templates": [
+    {
+      "title": "Name Correction Affidavit",
+      "body": "I solemnly affirm that my old and corrected names belong to the same person."
+    },
+    {
+      "title": "Domicile Affidavit",
+      "body": "I declare that I am a permanent resident and the information furnished is true."
+    },
+    {
+      "title": "Loss of CNIC",
+      "body": "I solemnly declare that my CNIC has been lost and despite best efforts could not be recovered."
+    },
+    {
+      "title": "Income Affidavit",
+      "body": "I hereby declare that the income details stated herein are true and correct."
+    }
+  ]
+}
