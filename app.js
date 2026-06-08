@@ -1,10 +1,36 @@
 let purposes = [];
 let currentPlan = "FREE";
-let deferredPrompt = null; // for PWA install
+let deferredPrompt = null;
+let signatureDrawn = false;
+let currentAffidavitNo = "";
+let currentPhotoURL = null;
+let signaturePadInitialized = false;
 
-/* =========================
-   DEFAULT PURPOSES (FALLBACK)
-========================= */
+function escapeHtml(str) {
+  if (!str) return "";
+  return str.replace(/[&<>"']/g, m => {
+    if (m === '&') return '&amp;';
+    if (m === '<') return '&lt;';
+    if (m === '>') return '&gt;';
+    if (m === '"') return '&quot;';
+    return '&#39;';
+  });
+}
+
+function generateAffidavitNumber() {
+  let uniquePart;
+  try {
+    if (typeof crypto !== "undefined" && crypto.randomUUID) {
+      uniquePart = crypto.randomUUID().slice(0, 8);
+    } else {
+      uniquePart = Math.random().toString(36).substring(2, 10).toUpperCase();
+    }
+  } catch (e) {
+    uniquePart = Math.random().toString(36).substring(2, 10).toUpperCase();
+  }
+  return `AGI-${Date.now()}-${uniquePart}`;
+}
+
 const DEFAULT_PURPOSES = [
   "Employment Verification",
   "Education Loan",
@@ -18,21 +44,14 @@ const DEFAULT_PURPOSES = [
   "Court Affidavit"
 ];
 
-/* =========================
-   LOAD PURPOSES (with fallback)
-========================= */
 async function loadPurposes() {
   try {
     const response = await fetch("purposes.json");
     const data = await response.json();
-    if (Array.isArray(data)) {
-      purposes = data;
-    } else {
-      purposes = Object.values(data).flat();
-    }
-    if (!purposes.length) throw new Error("Empty purposes data");
+    purposes = Array.isArray(data) ? data : Object.values(data).flat();
+    if (!purposes.length) throw new Error();
   } catch (error) {
-    console.warn("Using default purposes due to:", error);
+    console.warn("Using default purposes");
     purposes = [...DEFAULT_PURPOSES];
   } finally {
     populateDropdown(purposes);
@@ -51,9 +70,6 @@ function populateDropdown(list) {
   });
 }
 
-/* =========================
-   PURPOSE SEARCH (live filter)
-========================= */
 const purposeSearch = document.getElementById("purposeSearch");
 if (purposeSearch) {
   purposeSearch.addEventListener("input", function () {
@@ -65,9 +81,14 @@ if (purposeSearch) {
   });
 }
 
-/* =========================
-   PLAN BUTTONS
-========================= */
+const purposeDropdown = document.getElementById("purposeDropdown");
+const purposeInput = document.getElementById("purpose");
+if (purposeDropdown && purposeInput) {
+  purposeDropdown.addEventListener("change", () => {
+    if (purposeDropdown.value) purposeInput.value = purposeDropdown.value;
+  });
+}
+
 const freePlan = document.getElementById("freePlan");
 const proPlan = document.getElementById("proPlan");
 const premiumPlan = document.getElementById("premiumPlan");
@@ -75,14 +96,8 @@ if (freePlan) freePlan.onclick = () => { currentPlan = "FREE"; alert("Free Plan 
 if (proPlan) proPlan.onclick = () => { currentPlan = "PRO"; alert("Pro Plan Activated"); };
 if (premiumPlan) premiumPlan.onclick = () => { currentPlan = "PREMIUM"; alert("Premium Plan Activated"); };
 
-/* =========================
-   HELPER: VALIDATION
-========================= */
 function validateRequiredFields() {
-  const required = [
-    "country", "language", "fullName", "fatherName",
-    "age", "state", "district", "address", "purposeDropdown"
-  ];
+  const required = ["country", "language", "fullName", "fatherName", "age", "state", "district", "address"];
   for (let id of required) {
     const el = document.getElementById(id);
     if (!el || !el.value.trim()) {
@@ -91,43 +106,43 @@ function validateRequiredFields() {
     }
   }
   const purposeSelect = document.getElementById("purposeDropdown");
-  if (purposeSelect && purposeSelect.value === "") {
-    alert("Please select a valid purpose");
+  const purposeCustom = document.getElementById("purpose");
+  if ((!purposeSelect || purposeSelect.value === "") && (!purposeCustom || !purposeCustom.value.trim())) {
+    alert("Please select or type a valid purpose");
     return false;
   }
   return true;
 }
 
-/* =========================
-   GENERATE AFFIDAVIT (with photo, signature & color theme)
-   + Memory leak fix: revoke previous photo URL
-========================= */
-let currentPhotoURL = null;
-
 document.getElementById("generateBtn")?.addEventListener("click", function () {
   if (!validateRequiredFields()) return;
 
-  // ✅ Get selected color theme before generating HTML
-  const affidavitColor = document.getElementById("affidavitColor")?.value || "gold";
+  const photoInput = document.getElementById("photoUpload");
+  if (photoInput && photoInput.files.length && photoInput.files[0].size > 5 * 1024 * 1024) {
+    alert("Photo must be less than 5MB");
+    return;
+  }
 
+  currentAffidavitNo = generateAffidavitNumber();
+  const affidavitNo = currentAffidavitNo;
+
+  const affidavitColor = document.getElementById("affidavitColor")?.value || "gold";
   const country = document.getElementById("country").value;
   const language = document.getElementById("language").value;
-  const fullName = document.getElementById("fullName").value;
-  const fatherName = document.getElementById("fatherName").value;
-  const age = document.getElementById("age").value;
-  const state = document.getElementById("state").value;
-  const district = document.getElementById("district").value;
-  const address = document.getElementById("address").value;
-  const purpose = document.getElementById("purposeDropdown").value;
-  const statement = document.getElementById("swornStatement").value || "I solemnly affirm that the above information is true and correct.";
-
-  const affidavitNo = "AFF-" + Date.now();
+  const fullName = escapeHtml(document.getElementById("fullName").value);
+  const fatherName = escapeHtml(document.getElementById("fatherName").value);
+  const age = escapeHtml(document.getElementById("age").value);
+  const state = escapeHtml(document.getElementById("state").value);
+  const district = escapeHtml(document.getElementById("district").value);
+  const address = escapeHtml(document.getElementById("address").value);
+  const purposeSelectVal = document.getElementById("purposeDropdown").value;
+  const purposeCustomVal = document.getElementById("purpose").value;
+  const purpose = escapeHtml(purposeSelectVal || purposeCustomVal || "General Affidavit");
+  const statement = escapeHtml(document.getElementById("swornStatement").value) || "I solemnly affirm that the above information is true and correct.";
   const today = new Date().toLocaleDateString();
 
-  // Photo handling with revoke
   let photoHTML = "";
-  const photoInput = document.getElementById("photoUpload");
-  if (photoInput && photoInput.files.length > 0) {
+  if (photoInput && photoInput.files.length) {
     if (currentPhotoURL) URL.revokeObjectURL(currentPhotoURL);
     currentPhotoURL = URL.createObjectURL(photoInput.files[0]);
     photoHTML = `<img src="${currentPhotoURL}" class="preview-photo" style="max-width:150px; border-radius:10px;">`;
@@ -135,19 +150,12 @@ document.getElementById("generateBtn")?.addEventListener("click", function () {
     photoHTML = `<div class="no-photo">📷 No photo uploaded</div>`;
   }
 
-  // Signature preview
   let signatureHTML = "";
   const canvas = document.getElementById("signaturePad");
-  if (canvas) {
-    const dataURL = canvas.toDataURL();
-    const isEmpty = !canvas.hasAttribute("data-drawn");
-    if (!isEmpty && dataURL !== "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==") {
-      signatureHTML = `<img src="${dataURL}" class="preview-signature" style="max-width:200px; border:1px solid #ccc;">`;
-    } else {
-      signatureHTML = `<div class="no-signature">✍️ Signature not provided</div>`;
-    }
+  if (canvas && signatureDrawn) {
+    signatureHTML = `<img src="${canvas.toDataURL()}" class="preview-signature" style="max-width:200px; border:1px solid #ccc;">`;
   } else {
-    signatureHTML = `<div class="no-signature">Signature pad missing</div>`;
+    signatureHTML = `<div class="no-signature">✍️ Signature not provided</div>`;
   }
 
   const previewDiv = document.getElementById("preview");
@@ -158,8 +166,8 @@ document.getElementById("generateBtn")?.addEventListener("click", function () {
     <h2>AFFIDAVIT</h2>
     <p><b>Plan:</b> ${currentPlan}<br>
     <b>Affidavit No:</b> ${affidavitNo}<br>
-    <b>Country:</b> ${country}<br>
-    <b>Language:</b> ${language}<br>
+    <b>Country:</b> ${escapeHtml(country)}<br>
+    <b>Language:</b> ${escapeHtml(language)}<br>
     <b>Date:</b> ${today}</p>
     <hr>
     <p>I, <b>${fullName}</b>, S/o <b>${fatherName}</b>, aged <b>${age}</b> years, resident of <b>${address}</b>, <b>${district}</b>, <b>${state}</b>, hereby declare this affidavit for <b>${purpose}</b>.</p>
@@ -171,58 +179,45 @@ document.getElementById("generateBtn")?.addEventListener("click", function () {
     </div>
   `;
 
-  // ✅ Apply color theme: remove old theme classes, add new one
-  previewDiv.classList.remove(
-    "gold-theme", "blue-theme", "green-theme", "red-theme", "black-theme"
-  );
+  previewDiv.classList.remove("gold-theme", "blue-theme", "green-theme", "red-theme", "black-theme");
   previewDiv.classList.add(affidavitColor + "-theme");
-
-  // Show preview and sync toggle button
   previewDiv.style.display = "block";
+
   const toggleBtn = document.getElementById("togglePreviewBtn");
-  if (toggleBtn) {
-    toggleBtn.textContent = "📄 Hide Preview";
-    window.previewVisible = true; // shared state
-  }
+  if (toggleBtn) toggleBtn.textContent = "📄 Hide Preview";
 });
 
-/* =========================
-   PRINT
-========================= */
 document.getElementById("printBtn")?.addEventListener("click", () => window.print());
 
-/* =========================
-   REAL PDF EXPORT (fixed multi-page formula)
-========================= */
 document.getElementById("pdfBtn")?.addEventListener("click", async () => {
   const previewDiv = document.getElementById("preview");
-  if (!previewDiv) {
-    alert("Preview section not found.");
-    return;
-  }
-  if (previewDiv.innerHTML.trim() === "") {
+  if (!previewDiv || previewDiv.innerHTML.trim() === "") {
     alert("Please generate an affidavit first.");
     return;
   }
+  if (!currentAffidavitNo) {
+    alert("Please click Generate button first.");
+    return;
+  }
   if (typeof window.jspdf === "undefined") {
-    alert("PDF library not loaded. Please include jsPDF script.");
+    alert("PDF library not loaded.");
     return;
   }
 
-  const originalBtnText = document.getElementById("pdfBtn").innerText;
+  const originalText = document.getElementById("pdfBtn").innerText;
   document.getElementById("pdfBtn").innerText = "Generating PDF...";
 
   try {
+    await new Promise(resolve => setTimeout(resolve, 300));
     const canvas = await html2canvas(previewDiv, {
-      scale: 2,
-      backgroundColor: "#ffffff"
+      scale: 3,
+      backgroundColor: "#ffffff",
+      useCORS: true
     });
     const imgData = canvas.toDataURL("image/png");
-
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-
-    const imgWidth = 210; // A4 width in mm
+    const imgWidth = 210;
     const pageHeight = 297;
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
     let heightLeft = imgHeight;
@@ -230,245 +225,224 @@ document.getElementById("pdfBtn")?.addEventListener("click", async () => {
 
     pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
     heightLeft -= pageHeight;
-
     while (heightLeft > 0) {
       position = heightLeft - imgHeight;
       pdf.addPage();
       pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
     }
-
-    pdf.save("Affidavit.pdf");
-  } catch (error) {
-    console.error("PDF generation error:", error);
-    alert("Failed to generate PDF.");
+    pdf.save(`Affidavit_${currentAffidavitNo}.pdf`);
+  } catch (err) {
+    console.error(err);
+    alert("PDF generation failed.");
   } finally {
-    document.getElementById("pdfBtn").innerText = originalBtnText;
+    document.getElementById("pdfBtn").innerText = originalText;
   }
 });
 
-/* =========================
-   SHARE with safety
-========================= */
-document.getElementById("shareBtn")?.addEventListener("click", async () => {
+document.getElementById("pngBtn")?.addEventListener("click", async () => {
   const previewDiv = document.getElementById("preview");
-  if (!previewDiv) return;
-  const text = previewDiv.innerText;
-  if (!text.trim()) {
+  if (!previewDiv || previewDiv.innerHTML.trim() === "") {
     alert("Please generate an affidavit first.");
     return;
   }
+  if (!currentAffidavitNo) {
+    alert("Please click Generate button first.");
+    return;
+  }
+  await new Promise(resolve => setTimeout(resolve, 300));
+  const canvas = await html2canvas(previewDiv, { scale: 3, backgroundColor: "#ffffff" });
+  const link = document.createElement("a");
+  link.download = `Affidavit_${currentAffidavitNo}.png`;
+  link.href = canvas.toDataURL();
+  link.click();
+});
+
+document.getElementById("shareBtn")?.addEventListener("click", async () => {
+  const previewDiv = document.getElementById("preview");
+  if (!previewDiv || previewDiv.innerHTML.trim() === "") {
+    alert("Please generate an affidavit first.");
+    return;
+  }
+  const text = previewDiv.innerText;
   if (navigator.share) {
-    await navigator.share({ title: "Global Affidavit Generator Pro", text: text });
+    try {
+      await navigator.share({
+        title: "Global Affidavit Generator Pro",
+        text: text
+      });
+    } catch (err) {
+      console.log("Share cancelled or failed:", err);
+    }
   } else {
     alert("Sharing not supported on this browser");
   }
 });
 
-/* =========================
-   PNG DOWNLOAD
-========================= */
-const pngBtn = document.getElementById("pngBtn");
-if (pngBtn) {
-  pngBtn.addEventListener("click", () => {
-    const previewDiv = document.getElementById("preview");
-    if (!previewDiv) return;
-    if (previewDiv.innerHTML.trim() === "") {
-      alert("Please generate an affidavit first.");
-      return;
-    }
-    if (typeof html2canvas === "undefined") {
-      alert("html2canvas library missing.");
-      return;
-    }
-    html2canvas(previewDiv).then(canvas => {
-      const link = document.createElement("a");
-      link.download = "Affidavit.png";
-      link.href = canvas.toDataURL();
-      link.click();
-    }).catch(err => alert("PNG failed: " + err));
-  });
-}
-
-/* =========================
-   THEME SWITCH (with localStorage)
-========================= */
 const themeBtn = document.getElementById("themeBtn");
 if (themeBtn) {
   themeBtn.onclick = () => {
     document.body.classList.toggle("light-theme");
-    localStorage.setItem(
-      "theme",
-      document.body.classList.contains("light-theme") ? "light" : "dark"
-    );
+    localStorage.setItem("theme", document.body.classList.contains("light-theme") ? "light" : "dark");
   };
 }
 
-/* =========================
-   DIGITAL SIGNATURE (with touch-action fix)
-========================= */
 function initSignaturePad() {
+  if (signaturePadInitialized) return;
+  signaturePadInitialized = true;
+
   const canvas = document.getElementById("signaturePad");
   if (!canvas) return;
 
-  canvas.style.touchAction = "none";
-
-  canvas.width = canvas.offsetWidth || 400;
-  canvas.height = canvas.offsetHeight || 200;
-  const ctx = canvas.getContext("2d");
-  ctx.lineWidth = 2;
-  ctx.lineCap = "round";
-  ctx.lineJoin = "round";
-  ctx.strokeStyle = "#000";
-
   let drawing = false;
+  let ctx = canvas.getContext("2d");
 
-  function getCanvasCoords(e) {
+  function resizeAndRestore() {
+    const oldData = signatureDrawn ? canvas.toDataURL() : null;
+    const newWidth = canvas.offsetWidth || 400;
+    const newHeight = canvas.offsetHeight || 200;
+    canvas.width = newWidth;
+    canvas.height = newHeight;
+    ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = 2;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.strokeStyle = "#000";
+    if (oldData) {
+      const img = new Image();
+      img.onload = () => {
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      };
+      img.src = oldData;
+    }
+  }
+
+  window.addEventListener("resize", () => resizeAndRestore());
+  resizeAndRestore();
+
+  function getCoords(e) {
     const rect = canvas.getBoundingClientRect();
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
-    let clientX, clientY;
+    let cx, cy;
     if (e.touches) {
-      clientX = e.touches[0].clientX;
-      clientY = e.touches[0].clientY;
+      cx = e.touches[0].clientX;
+      cy = e.touches[0].clientY;
     } else {
-      clientX = e.clientX;
-      clientY = e.clientY;
+      cx = e.clientX;
+      cy = e.clientY;
     }
-    let x = (clientX - rect.left) * scaleX;
-    let y = (clientY - rect.top) * scaleY;
-    x = Math.min(Math.max(0, x), canvas.width);
-    y = Math.min(Math.max(0, y), canvas.height);
-    return { x, y };
+    let x = (cx - rect.left) * scaleX;
+    let y = (cy - rect.top) * scaleY;
+    return { x: Math.min(Math.max(0, x), canvas.width), y: Math.min(Math.max(0, y), canvas.height) };
   }
 
-  function startDrawing(e) {
+  function start(e) {
     drawing = true;
-    const { x, y } = getCanvasCoords(e);
+    const { x, y } = getCoords(e);
     ctx.beginPath();
     ctx.moveTo(x, y);
     ctx.lineTo(x, y);
     ctx.stroke();
-    canvas.setAttribute("data-drawn", "true");
+    signatureDrawn = true;
     e.preventDefault();
   }
-
   function draw(e) {
     if (!drawing) return;
-    const { x, y } = getCanvasCoords(e);
+    const { x, y } = getCoords(e);
     ctx.lineTo(x, y);
     ctx.stroke();
     ctx.beginPath();
     ctx.moveTo(x, y);
     e.preventDefault();
   }
-
-  function stopDrawing() {
+  function stop() {
     drawing = false;
     ctx.beginPath();
   }
 
-  canvas.addEventListener("mousedown", startDrawing);
+  canvas.addEventListener("mousedown", start);
   canvas.addEventListener("mousemove", draw);
-  canvas.addEventListener("mouseup", stopDrawing);
-  canvas.addEventListener("mouseleave", stopDrawing);
-  canvas.addEventListener("touchstart", startDrawing);
+  canvas.addEventListener("mouseup", stop);
+  canvas.addEventListener("mouseleave", stop);
+  canvas.addEventListener("touchstart", start);
   canvas.addEventListener("touchmove", draw);
-  canvas.addEventListener("touchend", stopDrawing);
-  canvas.addEventListener("touchcancel", stopDrawing);
+  canvas.addEventListener("touchend", stop);
+  canvas.addEventListener("touchcancel", stop);
 
   const clearBtn = document.getElementById("clearSignature");
   if (clearBtn) {
     clearBtn.onclick = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      canvas.removeAttribute("data-drawn");
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      signatureDrawn = false;
     };
   }
 }
 
-/* =========================
-   HIDDEN PREVIEW TOGGLE (fully synced)
-========================= */
 function setupHiddenPreview() {
   const previewDiv = document.getElementById("preview");
   if (!previewDiv) return;
-
   let toggleBtn = document.getElementById("togglePreviewBtn");
   if (!toggleBtn) {
     toggleBtn = document.createElement("button");
     toggleBtn.id = "togglePreviewBtn";
     toggleBtn.style.margin = "10px";
-    const container = document.querySelector(".container");
-    if (container) container.appendChild(toggleBtn);
-    else document.body.appendChild(toggleBtn);
+    document.querySelector(".container")?.appendChild(toggleBtn);
   }
-
-  window.previewVisible = false;
-  toggleBtn.textContent = "👁️ Show Preview";
+  const isVisible = previewDiv.style.display !== "none";
+  toggleBtn.textContent = isVisible ? "📄 Hide Preview" : "👁️ Show Preview";
 
   toggleBtn.addEventListener("click", () => {
-    if (window.previewVisible) {
+    const visible = previewDiv.style.display !== "none";
+    if (visible) {
       previewDiv.style.display = "none";
       toggleBtn.textContent = "👁️ Show Preview";
     } else {
       previewDiv.style.display = "block";
       toggleBtn.textContent = "📄 Hide Preview";
     }
-    window.previewVisible = !window.previewVisible;
   });
 }
 
-/* =========================
-   PWA INSTALL BUTTON
-========================= */
+window.addEventListener("beforeunload", () => {
+  if (currentPhotoURL) URL.revokeObjectURL(currentPhotoURL);
+});
+
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
   deferredPrompt = e;
   const installBtn = document.getElementById("installBtn");
-  if (installBtn) {
-    installBtn.style.display = "block";
-    installBtn.disabled = false;
-  }
+  if (installBtn) installBtn.style.display = "block";
 });
 
 window.addEventListener("appinstalled", () => {
   const installBtn = document.getElementById("installBtn");
-  if (installBtn) {
-    installBtn.style.display = "none";
-  }
+  if (installBtn) installBtn.style.display = "none";
 });
 
-const installBtn = document.getElementById("installBtn");
-if (installBtn) {
-  installBtn.addEventListener("click", async () => {
-    if (!deferredPrompt) {
-      alert("Installation not available right now.");
-      return;
-    }
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    console.log(`User ${outcome}`);
-    deferredPrompt = null;
-    installBtn.style.display = "none";
+document.getElementById("installBtn")?.addEventListener("click", async () => {
+  if (!deferredPrompt) {
+    alert("Installation not available.");
+    return;
+  }
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  if (outcome === "accepted") document.getElementById("installBtn").style.display = "none";
+});
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(err => console.log("SW reg failed:", err));
   });
 }
 
-/* =========================
-   SERVICE WORKER REGISTRATION
-========================= */
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js").catch(err => console.log("SW registration failed:", err));
-}
-
-/* =========================
-   INITIALIZE ALL
-========================= */
 document.addEventListener("DOMContentLoaded", () => {
-  // Restore theme from localStorage
-  if (localStorage.getItem("theme") === "light") {
-    document.body.classList.add("light-theme");
-  }
-
+  if (localStorage.getItem("theme") === "light") document.body.classList.add("light-theme");
   loadPurposes();
   initSignaturePad();
   setupHiddenPreview();
