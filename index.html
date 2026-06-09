@@ -3,100 +3,298 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
   <title>Global Affidavit Generator Pro</title>
 
-  <!-- SEO & PWA Meta Tags -->
-  <meta name="description" content="Generate professional affidavits with photo, signature, PDF export and PWA support.">
+  <!-- SEO -->
+  <meta name="description"
+        content="Generate professional affidavits with photo, signature, PDF export and PWA support.">
+
+  <!-- PWA -->
   <meta name="theme-color" content="#0f172a">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Affidavit Pro">
+  <meta name="apple-mobile-web-app-status-bar-style"
+        content="black-translucent">
+  <meta name="apple-mobile-web-app-title"
+        content="Affidavit Pro">
 
-  <!-- Icons & Manifest -->
+  <!-- CSS -->
   <link rel="stylesheet" href="styles.css">
+
+  <!-- Icons -->
   <link rel="icon" href="1000072386.jpg">
-  <link rel="apple-touch-icon" href="1000072386.jpg">   <!-- ✅ Corrected -->
-  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon"
+        href="1000072386.jpg">
+
+  <!-- Manifest -->
+  <link rel="manifest"
+        href="manifest.json">
+
 </head>
 
 <body>
-  <div class="container">
-    <img src="1000072386.jpg" class="rotating-logo" alt="AGI Legal Logo">
-    <h1>Global Affidavit Generator Pro</h1>
 
-    <div class="plan-buttons">
-      <button id="freePlan" class="free-plan" type="button">FREE</button>
-      <button id="proPlan" class="pro-plan" type="button">PRO</button>
-      <button id="premiumPlan" class="premium-plan" type="button">PREMIUM</button>
-    </div>
+<div class="container">
 
-    <select id="country">
-      <option>India</option>
-      <option>Pakistan</option>
-      <option>UAE</option>
-      <option>USA</option>
-      <option>UK</option>
-    </select>
+<img src="1000072386.jpg"
+     class="rotating-logo"
+     alt="AGI Legal Logo">
 
-    <select id="language">
-      <option>English</option>
-      <option>Urdu</option>
-      <option>Hindi</option>
-      <option>Arabic</option>
-    </select>
+<h1>Global Affidavit Generator Pro</h1>
 
-    <input type="text" id="fullName" placeholder="Full Name" autocomplete="name">
-    <input type="text" id="fatherName" placeholder="Father / Husband Name">
-    <input type="number" id="age" placeholder="Age">
-    <input type="text" id="state" placeholder="State / Province">
-    <input type="text" id="district" placeholder="District / City">
-    <input type="text" id="address" placeholder="Full Address">
-    <input type="text" id="purposeSearch" placeholder="Search Purpose">
-    <select id="purposeDropdown">
-<option value="">Select Purpose</option>
-    </select>
-    <textarea id="swornStatement" placeholder="Sworn Statement"></textarea>
+<div class="plan-buttons">
 
-    <h3>📷 Upload Photo (Optional)</h3>
-    <input type="file" id="photoUpload" accept="image/*">
+<button id="freePlan"
+        class="free-plan"
+        type="button">
+FREE
+</button>
 
-    <h3>✍ Electronic Signature</h3>
-    <canvas id="signaturePad" width="700" height="250"></canvas>
-    <button id="clearSignature" type="button">Clear Signature</button>
+<button id="proPlan"
+        class="pro-plan"
+        type="button">
+PRO
+</button>
 
-    <!-- Color Theme Selector -->
-    <label for="affidavitColor">🎨 Affidavit Color Theme:</label>
-    <select id="affidavitColor">
-      <option value="gold">Gold Theme (Default)</option>
-      <option value="blue">Blue Theme</option>
-      <option value="green">Green Theme</option>
-      <option value="red">Red Theme</option>
-      <option value="black">Black Theme</option>
-    </select>
+<button id="premiumPlan"
+        class="premium-plan"
+        type="button">
+PREMIUM
+</button>
 
-    <button id="generateBtn" type="button">✨ Generate Affidavit</button>
-    <button id="pdfBtn" type="button">📄 Save as PDF</button>
-    <button id="pngBtn" type="button">🖼 Save as PNG</button>
-    <button id="printBtn" type="button">🖨 Print</button>
-    <button id="shareBtn" type="button">📤 Share</button>
-    <button id="themeBtn" type="button">🌓 Theme</button>
-    <button id="installBtn" type="button">📲 Install App</button>
+</div>
 
-    <div class="footer-links">
-      <a href="#">Privacy Policy</a>
-      <a href="#">Terms & Conditions</a>
-      <a href="#">Contact</a>
-    </div>
+<label for="country">Country</label>
 
-    <div id="preview" style="display:none;"></div>
-  </div>
+<select id="country">
+<option>India</option>
+<option>Pakistan</option>
+<option>UAE</option>
+<option>USA</option>
+<option>UK</option>
+</select>
 
-  <!-- Required Libraries -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="app.js"></script>
+<label for="language">Language</label>
+
+<select id="language">
+<option>English</option>
+<option>Urdu</option>
+<option>Hindi</option>
+<option>Arabic</option>
+</select>
+
+<label for="fullName">Full Name</label>
+
+<input type="text"
+       id="fullName"
+       placeholder="Full Name"
+       autocomplete="name">
+
+<label for="fatherName">
+Father / Husband Name
+</label>
+
+<input type="text"
+       id="fatherName"
+       placeholder="Father / Husband Name">
+
+<label for="age">Age</label>
+
+<input type="number"
+       id="age"
+       placeholder="Age">
+
+<label for="state">
+State / Province
+</label>
+
+<input type="text"
+       id="state"
+       placeholder="State / Province">
+
+<label for="district">
+District / City
+</label>
+
+<input type="text"
+       id="district"
+       placeholder="District / City">
+
+<label for="address">
+Full Address
+</label>
+
+<input type="text"
+       id="address"
+       placeholder="Full Address">
+       <label for="purposeSearch">
+Search Purpose
+</label>
+
+<input type="text"
+       id="purposeSearch"
+       placeholder="Search Purpose">
+
+<label for="purposeDropdown">
+Purpose
+</label>
+
+<select id="purposeDropdown">
+<option value="">
+Select Purpose
+</option>
+</select>
+
+<label for="swornStatement">
+Sworn Statement
+</label>
+
+<textarea id="swornStatement"
+          placeholder="Sworn Statement"></textarea>
+
+<h3>📷 Upload Photo (Optional)</h3>
+
+<input type="file"
+       id="photoUpload"
+       accept="image/*">
+
+<h3>✍ Electronic Signature</h3>
+
+<canvas id="signaturePad"
+        width="700"
+        height="250">
+</canvas>
+
+<button id="clearSignature"
+        type="button">
+Clear Signature
+</button>
+
+<!-- Watermark -->
+
+<label for="watermarkType">
+💧 Watermark Style
+</label>
+
+<select id="watermarkType">
+
+<option value="none">
+No Watermark
+</option>
+
+<option value="confidential">
+CONFIDENTIAL
+</option>
+
+<option value="notary">
+NOTARY COPY
+</option>
+
+<option value="draft">
+DRAFT
+</option>
+
+</select>
+
+<!-- Color Theme -->
+
+<label for="affidavitColor">
+🎨 Affidavit Color Theme
+</label>
+
+<select id="affidavitColor">
+
+<option value="gold">
+Gold Theme (Default)
+</option>
+
+<option value="blue">
+Blue Theme
+</option>
+
+<option value="green">
+Green Theme
+</option>
+
+<option value="red">
+Red Theme
+</option>
+
+<option value="black">
+Black Theme
+</option>
+
+</select>
+<button id="generateBtn"
+        type="button">
+✨ Generate Affidavit
+</button>
+
+<button id="pdfBtn"
+        type="button">
+📄 Save as PDF
+</button>
+
+<button id="pngBtn"
+        type="button">
+🖼 Save as PNG
+</button>
+
+<button id="printBtn"
+        type="button">
+🖨 Print
+</button>
+
+<button id="shareBtn"
+        type="button">
+📤 Share
+</button>
+
+<button id="themeBtn"
+        type="button">
+🌓 Theme
+</button>
+
+<button id="installBtn"
+        type="button">
+📲 Install App
+</button>
+
+<div class="footer-links">
+
+<a href="privacy.html">
+Privacy Policy
+</a>
+
+<a href="terms.html">
+Terms & Conditions
+</a>
+
+<a href="contact.html">
+Contact
+</a>
+
+</div>
+
+<div id="preview"
+     style="display:none;">
+</div>
+</div>
+
+<!-- Required Libraries -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+</script>
+
+<!-- Main App -->
+
+<script src="app.js"></script>
+
 </body>
-
 </html>
