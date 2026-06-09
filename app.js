@@ -181,3 +181,200 @@ function validateRequiredFields() {
   return true;
 
 }
+// ====================== SIGNATURE PAD ======================
+function initSignaturePad() {
+
+  const canvas = document.getElementById("signaturePad");
+
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+
+  let drawing = false;
+
+  ctx.lineWidth = 2;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.strokeStyle = "#000";
+
+  function getPos(e) {
+
+    const rect = canvas.getBoundingClientRect();
+
+    let x, y;
+
+    if (e.touches) {
+
+      x = e.touches[0].clientX - rect.left;
+      y = e.touches[0].clientY - rect.top;
+
+    } else {
+
+      x = e.clientX - rect.left;
+      y = e.clientY - rect.top;
+
+    }
+
+    return { x, y };
+
+  }
+
+  function start(e) {
+
+    drawing = true;
+
+    signatureDrawn = true;
+
+    const pos = getPos(e);
+
+    ctx.beginPath();
+    ctx.moveTo(pos.x, pos.y);
+
+    e.preventDefault();
+
+  }
+
+  function draw(e) {
+
+    if (!drawing) return;
+
+    const pos = getPos(e);
+
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+
+    e.preventDefault();
+
+  }
+
+  function stop() {
+
+    drawing = false;
+    ctx.beginPath();
+
+  }
+
+  canvas.addEventListener("mousedown", start);
+  canvas.addEventListener("mousemove", draw);
+  canvas.addEventListener("mouseup", stop);
+  canvas.addEventListener("mouseleave", stop);
+
+  canvas.addEventListener("touchstart", start);
+  canvas.addEventListener("touchmove", draw);
+  canvas.addEventListener("touchend", stop);
+
+  document.getElementById("clearSignature")?.addEventListener("click", () => {
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    signatureDrawn = false;
+
+  });
+
+}
+
+// ====================== GENERATE ======================
+function generateAffidavit() {
+
+  if (!validateRequiredFields()) return;
+
+  currentAffidavitNo = generateAffidavitNumber();
+
+  const preview = document.getElementById("preview");
+
+  const fullName = escapeHTML(document.getElementById("fullName").value);
+  const fatherName = escapeHTML(document.getElementById("fatherName").value);
+  const age = escapeHTML(document.getElementById("age").value);
+  const address = escapeHTML(document.getElementById("address").value);
+  const purpose = escapeHTML(document.getElementById("purposeDropdown").value);
+
+  let photoHTML = "";
+
+  const photoInput = document.getElementById("photoUpload");
+
+  if (photoInput && photoInput.files.length > 0) {
+
+    if (currentPhotoURL) {
+
+      URL.revokeObjectURL(currentPhotoURL);
+
+    }
+
+    currentPhotoURL = URL.createObjectURL(photoInput.files[0]);
+
+    photoHTML = `
+      <img src="${currentPhotoURL}"
+      class="preview-photo">
+    `;
+
+  }
+
+  let signatureHTML = "";
+
+  if (signatureDrawn) {
+
+    const canvas = document.getElementById("signaturePad");
+
+    signatureHTML = `
+      <img src="${canvas.toDataURL()}"
+      class="preview-signature">
+    `;
+
+  }
+
+  preview.innerHTML = `
+
+  ${photoHTML}
+
+  <h2>AFFIDAVIT</h2>
+
+  <p>
+  <b>Affidavit No:</b>
+  ${currentAffidavitNo}
+  </p>
+
+  <hr>
+
+  <p>
+
+  I,
+
+  <b>${fullName}</b>,
+
+  S/o
+
+  <b>${fatherName}</b>,
+
+  aged
+
+  <b>${age}</b>
+
+  years,
+
+  resident of
+
+  <b>${address}</b>,
+
+  hereby declare this affidavit for
+
+  <b>${purpose}</b>.
+
+  </p>
+
+  <br><br>
+
+  ${signatureHTML}
+
+  <br>
+
+  __________________
+
+  <br>
+
+  Deponent Signature
+
+  `;
+
+  preview.style.display = "block";
+
+}
