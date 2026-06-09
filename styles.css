@@ -207,6 +207,9 @@ button:hover{
   0 6px 25px rgba(0,0,0,.25);
 
   position:relative;
+  display:none;
+overflow-x:auto;
+word-break:break-word;
 }
 
 #preview::before{
@@ -339,4 +342,21 @@ button:hover{
   .plan-buttons{
     flex-wrap:wrap;
   }
+}
+.watermark-overlay{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) rotate(-35deg);
+  font-size:48px;
+  font-weight:bold;
+  color:rgba(0,0,0,.12);
+  pointer-events:none;
+  z-index:0;
+  letter-spacing:4px;
+}
+
+#preview > *{
+  position:relative;
+  z-index:1;
 }
