@@ -546,3 +546,97 @@ function setupPreviewToggle() {
   });
 
 }
+// ====================== PWA INSTALL ======================
+let deferredPrompt = null;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+
+  e.preventDefault();
+
+  deferredPrompt = e;
+
+  const installBtn = document.getElementById("installBtn");
+
+  if (installBtn) {
+    installBtn.style.display = "block";
+  }
+
+});
+
+window.addEventListener("appinstalled", () => {
+
+  const installBtn = document.getElementById("installBtn");
+
+  if (installBtn) {
+    installBtn.style.display = "none";
+  }
+
+});
+
+document.getElementById("installBtn")?.addEventListener("click", async () => {
+
+  if (!deferredPrompt) {
+
+    alert("Installation not available.");
+
+    return;
+
+  }
+
+  deferredPrompt.prompt();
+
+  await deferredPrompt.userChoice;
+
+  deferredPrompt = null;
+
+});
+
+// ====================== SERVICE WORKER ======================
+if ("serviceWorker" in navigator) {
+
+  window.addEventListener("load", () => {
+
+    navigator.serviceWorker
+      .register("./sw.js")
+      .then(() => console.log("Service Worker Registered"))
+      .catch(err => console.log("SW Error:", err));
+
+  });
+
+}
+
+// ====================== CLEANUP ======================
+window.addEventListener("beforeunload", () => {
+
+  if (currentPhotoURL) {
+
+    URL.revokeObjectURL(currentPhotoURL);
+
+  }
+
+});
+
+// ====================== DOM READY ======================
+document.addEventListener("DOMContentLoaded", () => {
+
+  // Restore theme
+
+  if (localStorage.getItem("theme") === "light") {
+
+    document.body.classList.add("light-theme");
+
+  }
+
+  // Load purposes
+
+  loadPurposes();
+
+  // Initialize signature pad
+
+  initSignaturePad();
+
+  // Preview toggle
+
+  setupPreviewToggle();
+
+});
