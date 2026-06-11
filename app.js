@@ -289,6 +289,11 @@ function generateAffidavit() {
   const purpose = escapeHTML(document.getElementById("purposeDropdown").value);
 const sworn =
 escapeHTML(document.getElementById("swornStatement").value);
+  const watermarkType =
+document.getElementById("watermarkType").value;
+
+const affidavitColor =
+document.getElementById("affidavitColor").value;
   let photoHTML = "";
 
   const photoInput = document.getElementById("photoUpload");
@@ -322,9 +327,11 @@ escapeHTML(document.getElementById("swornStatement").value);
     `;
 
   }
-
+preview.className = affidavitColor + "-theme";
   preview.innerHTML = `
-
+<div class="watermark-overlay">
+${watermarkType==="none"?"":watermarkType.toUpperCase()}
+</div>
   ${photoHTML}
 
   <h2>AFFIDAVIT</h2>
