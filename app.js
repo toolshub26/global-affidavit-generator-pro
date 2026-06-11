@@ -262,7 +262,7 @@ function initSignaturePad() {
   canvas.addEventListener("touchstart", start);
   canvas.addEventListener("touchmove", draw);
   canvas.addEventListener("touchend", stop);
-
+canvas.addEventListener("touchcancel", stop);
   document.getElementById("clearSignature")?.addEventListener("click", () => {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -287,7 +287,8 @@ function generateAffidavit() {
   const age = escapeHTML(document.getElementById("age").value);
   const address = escapeHTML(document.getElementById("address").value);
   const purpose = escapeHTML(document.getElementById("purposeDropdown").value);
-
+const sworn =
+escapeHTML(document.getElementById("swornStatement").value);
   let photoHTML = "";
 
   const photoInput = document.getElementById("photoUpload");
@@ -358,7 +359,11 @@ function generateAffidavit() {
   hereby declare this affidavit for
 
   <b>${purpose}</b>.
+<hr>
 
+<p>
+${sworn}
+</p>
   </p>
 
   <br><br>
@@ -547,7 +552,6 @@ function setupPreviewToggle() {
 
 }
 // ====================== PWA INSTALL ======================
-let deferredPrompt = null;
 
 window.addEventListener("beforeinstallprompt", (e) => {
 
@@ -617,26 +621,32 @@ window.addEventListener("beforeunload", () => {
 });
 
 // ====================== DOM READY ======================
-document.addEventListener("DOMContentLoaded", () => {
+
+
+  document.addEventListener("DOMContentLoaded", () => {
 
   // Restore theme
-
   if (localStorage.getItem("theme") === "light") {
-
     document.body.classList.add("light-theme");
-
   }
 
   // Load purposes
-
   loadPurposes();
 
-  // Initialize signature pad
+  // Purpose search
+  setupPurposeSearch();
 
+  // Free/Pro/Premium buttons
+  setupPlans();
+
+  // Signature
   initSignaturePad();
 
-  // Preview toggle
-
+  // Preview button
   setupPreviewToggle();
+
+  // Generate button
+  document.getElementById("generateBtn")
+  ?.addEventListener("click", generateAffidavit);
 
 });
