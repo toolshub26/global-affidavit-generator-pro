@@ -1535,7 +1535,3 @@ document.addEventListener(
 
   );
 
-}
-
-// ====================== END OF APP.JS ======================
-);
