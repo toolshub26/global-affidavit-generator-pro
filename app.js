@@ -172,3 +172,232 @@ const DEFAULT_PURPOSES = [
   "Court Affidavit"
 
 ];
+
+// ====================== HELPERS ======================
+
+function escapeHTML(str) {
+
+  str = String(str ?? "");
+
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+function generateAffidavitNumber() {
+
+  let uniquePart;
+
+  try {
+
+    if (crypto.randomUUID) {
+
+      uniquePart =
+      crypto.randomUUID()
+      .slice(0,8)
+      .toUpperCase();
+
+    }
+
+    else {
+
+      uniquePart =
+      Math.random()
+      .toString(36)
+      .substring(2,10)
+      .toUpperCase();
+
+    }
+
+  }
+
+  catch {
+
+    uniquePart =
+    Math.random()
+    .toString(36)
+    .substring(2,10)
+    .toUpperCase();
+
+  }
+
+  return `AGI-${Date.now()}-${uniquePart}`;
+
+}
+
+// ====================== COUNTRY ENGINE ======================
+
+function getCountryData() {
+
+  const country =
+  document.getElementById("country")?.value;
+
+  return COUNTRIES[country] || COUNTRIES.India;
+
+}
+
+// ====================== LANGUAGE ENGINE ======================
+
+function getLanguageData() {
+
+  const language =
+  document.getElementById("language")?.value;
+
+  return LANGUAGES[language] || LANGUAGES.English;
+
+}
+
+// ====================== THEME ENGINE ======================
+
+function applyTheme(themeName) {
+
+  const preview =
+  document.getElementById("preview");
+
+  if (!preview) return;
+
+  preview.classList.remove(
+    "gold-theme",
+    "blue-theme",
+    "green-theme",
+    "red-theme",
+    "black-theme"
+  );
+
+  preview.classList.add(
+    themeName + "-theme"
+  );
+
+}
+
+// ====================== PLAN ENGINE ======================
+
+function setupPlans() {
+
+  document
+  .getElementById("freePlan")
+  ?.addEventListener("click", () => {
+
+    currentPlan = "FREE";
+
+    populateDropdown(
+      PLAN_PURPOSES.FREE
+    );
+
+    alert(
+      "FREE Plan Activated"
+    );
+
+  });
+
+  document
+  .getElementById("proPlan")
+  ?.addEventListener("click", () => {
+
+    currentPlan = "PRO";
+
+    populateDropdown(
+      PLAN_PURPOSES.PRO
+    );
+
+    alert(
+      "PRO Plan Activated"
+    );
+
+  });
+
+  document
+  .getElementById("premiumPlan")
+  ?.addEventListener("click", () => {
+
+    currentPlan = "PREMIUM";
+
+    populateDropdown(
+      PLAN_PURPOSES.PREMIUM
+    );
+
+    alert(
+      "PREMIUM Plan Activated"
+    );
+
+  });
+
+}
+
+// ====================== PURPOSE DROPDOWN ======================
+
+function populateDropdown(list) {
+
+  const dropdown =
+  document.getElementById(
+    "purposeDropdown"
+  );
+
+  if (!dropdown) return;
+
+  dropdown.innerHTML =
+  `<option value="">
+  Select Purpose
+  </option>`;
+
+  list.forEach(item => {
+
+    const option =
+    document.createElement(
+      "option"
+    );
+
+    option.value = item;
+
+    option.textContent = item;
+
+    dropdown.appendChild(option);
+
+  });
+
+}
+
+// ====================== PURPOSE SEARCH ======================
+
+function setupPurposeSearch() {
+
+  const searchBox =
+  document.getElementById(
+    "purposeSearch"
+  );
+
+  if (!searchBox) return;
+
+  searchBox.addEventListener(
+    "input",
+
+    function () {
+
+      const search =
+      this.value
+      .toLowerCase();
+
+      const filtered =
+      PLAN_PURPOSES[currentPlan]
+      .filter(item =>
+
+        item
+        .toLowerCase()
+        .includes(search)
+
+      );
+
+      populateDropdown(
+        filtered
+      );
+
+    }
+
+  );
+
+}
+
