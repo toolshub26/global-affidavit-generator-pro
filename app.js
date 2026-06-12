@@ -676,3 +676,316 @@ function initSignaturePad() {
 
 }
 
+// ====================== GENERATE ENGINE ======================
+
+function generateAffidavit() {
+
+  if (!validateRequiredFields()) return;
+
+  currentAffidavitNo =
+  generateAffidavitNumber();
+
+  const preview =
+  document.getElementById(
+    "preview"
+  );
+
+  const country =
+  document.getElementById(
+    "country"
+  ).value;
+
+  const language =
+  document.getElementById(
+    "language"
+  ).value;
+
+  const countryData =
+  getCountryData();
+
+  const languageData =
+  getLanguageData();
+
+  const fullName =
+  escapeHTML(
+    document.getElementById(
+      "fullName"
+    ).value
+  );
+
+  const fatherName =
+  escapeHTML(
+    document.getElementById(
+      "fatherName"
+    ).value
+  );
+
+  const age =
+  escapeHTML(
+    document.getElementById(
+      "age"
+    ).value
+  );
+
+  const address =
+  escapeHTML(
+    document.getElementById(
+      "address"
+    ).value
+  );
+
+  const purpose =
+  escapeHTML(
+    document.getElementById(
+      "purposeDropdown"
+    ).value
+  );
+
+  const sworn =
+  escapeHTML(
+    document.getElementById(
+      "swornStatement"
+    ).value
+  );
+
+  const watermarkType =
+  document.getElementById(
+    "watermarkType"
+  ).value;
+
+  const affidavitColor =
+  document.getElementById(
+    "affidavitColor"
+  ).value;
+
+  applyTheme(
+    affidavitColor
+  );
+
+  // ================= PHOTO =================
+
+  let photoHTML = `
+  <div class="no-photo">
+  No Photo
+  </div>
+  `;
+
+  const photoInput =
+  document.getElementById(
+    "photoUpload"
+  );
+
+  if (
+    photoInput &&
+    photoInput.files.length > 0
+  ) {
+
+    if (
+      currentPhotoURL
+    ) {
+
+      URL.revokeObjectURL(
+        currentPhotoURL
+      );
+
+    }
+
+    currentPhotoURL =
+    URL.createObjectURL(
+      photoInput.files[0]
+    );
+
+    photoHTML = `
+    <img
+    src="${currentPhotoURL}"
+    class="preview-photo">
+    `;
+
+  }
+
+  // ================= SIGNATURE =================
+
+  let signatureHTML = `
+  <div class="no-signature">
+  No Signature
+  </div>
+  `;
+
+  if (
+    signatureDrawn
+  ) {
+
+    const canvas =
+    document.getElementById(
+      "signaturePad"
+    );
+
+    signatureHTML = `
+    <img
+    src="${canvas.toDataURL()}"
+    class="preview-signature">
+    `;
+
+  }
+
+  // ================= LANGUAGE TEMPLATE =================
+
+  let bodyText = "";
+
+  switch (language) {
+
+    case "Urdu":
+
+      bodyText = `
+      میں
+      <b>${fullName}</b>
+      ولد
+      <b>${fatherName}</b>
+      عمر
+      <b>${age}</b>
+      سال،
+      رہائشی
+      <b>${address}</b>
+      یہ حلفیہ بیان
+      <b>${purpose}</b>
+      کے لیے دیتا ہوں۔
+      `;
+
+      break;
+
+    case "Hindi":
+
+      bodyText = `
+      मैं
+      <b>${fullName}</b>
+      पिता
+      <b>${fatherName}</b>,
+      आयु
+      <b>${age}</b>
+      वर्ष,
+      निवासी
+      <b>${address}</b>
+      यह शपथ पत्र
+      <b>${purpose}</b>
+      हेतु प्रस्तुत करता हूँ।
+      `;
+
+      break;
+
+    case "Arabic":
+
+      bodyText = `
+      أنا
+      <b>${fullName}</b>
+      ابن
+      <b>${fatherName}</b>
+      عمري
+      <b>${age}</b>
+      سنة،
+      المقيم في
+      <b>${address}</b>
+      أقر هذا البيان من أجل
+      <b>${purpose}</b>.
+      `;
+
+      break;
+
+    default:
+
+      bodyText = `
+      I,
+      <b>${fullName}</b>,
+      S/o
+      <b>${fatherName}</b>,
+      aged
+      <b>${age}</b>
+      years,
+      resident of
+      <b>${address}</b>,
+      hereby declare this affidavit for
+      <b>${purpose}</b>.
+      `;
+
+  }
+
+  // ================= PREVIEW =================
+
+  preview.className =
+  affidavitColor +
+  "-theme";
+
+  preview.dir =
+  languageData.dir;
+
+  preview.innerHTML = `
+
+  <div class="watermark-overlay">
+
+  ${
+    watermarkType === "none"
+      ? ""
+      : watermarkType.toUpperCase()
+  }
+
+  </div>
+
+  ${photoHTML}
+
+  <h2>
+
+  ${countryData.flag}
+
+  ${languageData.title}
+
+  </h2>
+
+  <p>
+
+  <b>Country:</b>
+
+  ${country}
+
+  </p>
+
+  <p>
+
+  <b>Affidavit No:</b>
+
+  ${currentAffidavitNo}
+
+  </p>
+
+  <hr>
+
+  <p>
+
+  ${bodyText}
+
+  </p>
+
+  <hr>
+
+  <p>
+
+  ${sworn}
+
+  </p>
+
+  <br><br>
+
+  ${signatureHTML}
+
+  <br>
+
+  __________________
+
+  <br>
+
+  Deponent Signature
+
+  `;
+
+  preview.style.display =
+  "block";
+
+}
