@@ -401,3 +401,278 @@ function setupPurposeSearch() {
 
 }
 
+// ====================== LOAD PURPOSES ======================
+
+async function loadPurposes() {
+
+  try {
+
+    const response =
+    await fetch("purposes.json");
+
+    const data =
+    await response.json();
+
+    purposes =
+    Array.isArray(data)
+      ? data
+      : Object.values(data).flat();
+
+    if (!purposes.length) {
+
+      throw new Error();
+
+    }
+
+  }
+
+  catch {
+
+    console.log(
+      "Using default purposes"
+    );
+
+    purposes =
+    [...DEFAULT_PURPOSES];
+
+  }
+
+  populateDropdown(
+    PLAN_PURPOSES[currentPlan]
+  );
+
+}
+
+// ====================== VALIDATION ENGINE ======================
+
+function validateRequiredFields() {
+
+  const required = [
+
+    "country",
+    "language",
+    "fullName",
+    "fatherName",
+    "age",
+    "state",
+    "district",
+    "address"
+
+  ];
+
+  for (const id of required) {
+
+    const el =
+    document.getElementById(id);
+
+    if (
+      !el ||
+      !el.value.trim()
+    ) {
+
+      alert(
+        "Please fill " + id
+      );
+
+      return false;
+
+    }
+
+  }
+
+  if (
+    document
+    .getElementById(
+      "purposeDropdown"
+    )
+    .value === ""
+  ) {
+
+    alert(
+      "Select purpose"
+    );
+
+    return false;
+
+  }
+
+  return true;
+
+}
+
+// ====================== SIGNATURE ENGINE ======================
+
+function initSignaturePad() {
+
+  const canvas =
+  document.getElementById(
+    "signaturePad"
+  );
+
+  if (!canvas) return;
+
+  const ctx =
+  canvas.getContext("2d");
+
+  let drawing = false;
+
+  ctx.lineWidth = 2;
+
+  ctx.lineCap = "round";
+
+  ctx.lineJoin = "round";
+
+  ctx.strokeStyle = "#000";
+
+  function getPos(e) {
+
+    const rect =
+    canvas.getBoundingClientRect();
+
+    let x;
+    let y;
+
+    if (e.touches) {
+
+      x =
+      e.touches[0].clientX -
+      rect.left;
+
+      y =
+      e.touches[0].clientY -
+      rect.top;
+
+    }
+
+    else {
+
+      x =
+      e.clientX -
+      rect.left;
+
+      y =
+      e.clientY -
+      rect.top;
+
+    }
+
+    return { x, y };
+
+  }
+
+  function start(e) {
+
+    drawing = true;
+
+    signatureDrawn = true;
+
+    const pos =
+    getPos(e);
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+      pos.x,
+      pos.y
+    );
+
+    e.preventDefault();
+
+  }
+
+  function draw(e) {
+
+    if (!drawing) return;
+
+    const pos =
+    getPos(e);
+
+    ctx.lineTo(
+      pos.x,
+      pos.y
+    );
+
+    ctx.stroke();
+
+    e.preventDefault();
+
+  }
+
+  function stop() {
+
+    drawing = false;
+
+    ctx.beginPath();
+
+  }
+
+  // Mouse
+
+  canvas.addEventListener(
+    "mousedown",
+    start
+  );
+
+  canvas.addEventListener(
+    "mousemove",
+    draw
+  );
+
+  canvas.addEventListener(
+    "mouseup",
+    stop
+  );
+
+  canvas.addEventListener(
+    "mouseleave",
+    stop
+  );
+
+  // Touch
+
+  canvas.addEventListener(
+    "touchstart",
+    start
+  );
+
+  canvas.addEventListener(
+    "touchmove",
+    draw
+  );
+
+  canvas.addEventListener(
+    "touchend",
+    stop
+  );
+
+  canvas.addEventListener(
+    "touchcancel",
+    stop
+  );
+
+  // Clear Signature
+
+  document
+  .getElementById(
+    "clearSignature"
+  )
+  ?.addEventListener(
+    "click",
+
+    () => {
+
+      ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
+
+      signatureDrawn = false;
+
+    }
+
+  );
+
+}
+
