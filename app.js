@@ -48,7 +48,35 @@ const COUNTRIES = {
     currency: "GBP",
     emblem: "Royal Coat of Arms"
   }
+,
 
+Bangladesh: {
+  flag: "🇧🇩",
+  code: "BD",
+  currency: "BDT",
+  emblem: "National Emblem"
+},
+
+SaudiArabia: {
+  flag: "🇸🇦",
+  code: "SA",
+  currency: "SAR",
+  emblem: "Palm Tree & Swords"
+},
+
+Canada: {
+  flag: "🇨🇦",
+  code: "CA",
+  currency: "CAD",
+  emblem: "Canadian Arms"
+},
+
+Australia: {
+  flag: "🇦🇺",
+  code: "AU",
+  currency: "AUD",
+  emblem: "Commonwealth Star"
+}
 };
 
 // ====================== LANGUAGES ======================
@@ -69,25 +97,64 @@ const LANGUAGES = {
     title: "शपथ पत्र"
   },
 
-  Arabic: {
-    dir: "rtl",
-    title: "إقرار خطي"
-  }
+Arabic: {
+  dir: "rtl",
+  title: "إقرار خطي"
+},
+
+Bengali: {
+  dir: "ltr",
+  title: "হলফনামা"
+},
+
+French: {
+  dir: "ltr",
+  title: "AFFIDAVIT"
+},
+
+German: {
+  dir: "ltr",
+  title: "EIDESSTATTLICHE ERKLÄRUNG"
+},
+
+Spanish: {
+  dir: "ltr",
+  title: "DECLARACIÓN JURADA"
+},
+
+Turkish: {
+  dir: "ltr",
+  title: "YEMİNLİ BEYAN"
+}
 
 };
 
 // ====================== PLAN PURPOSES ======================
 const PLAN_PURPOSES = {
-
-  FREE: [
-
-    "Employment Verification",
-    "Income Proof",
-    "Name Change",
-    "Marriage Certificate",
-    "Loss of Documents",
-    "Passport Application",
-    "Court Affidavit"
+  
+FREE: [
+"Employment Verification",
+"Income Proof",
+"Name Change",
+"Marriage Certificate",
+"Loss of Documents",
+"Passport Application",
+"Court Affidavit",
+"Education Loan",
+"Property Transfer",
+"Birth Certificate Correction",
+"Character Certificate",
+"Gap Certificate",
+"Bonafide Certificate",
+"Single Status",
+"Tenant Verification",
+"Rental Agreement",
+"Legal Heir",
+"Affidavit of Truth",
+"Witness Statement",
+"Loan Declaration"
+],
+  
 
   ],
 
@@ -156,23 +223,103 @@ const WATERMARKS = [
   "notary",
   "original"
 ];
+const PLAN_FEATURES = {
 
+FREE: [
+"20 purposes",
+"5 countries",
+"4 languages",
+"Watermark compulsory",
+"Ads"
+],
+
+PRO: [
+"50 countries",
+"20 languages",
+"50+ purposes",
+"No ads",
+"QR verification",
+"PDF & PNG"
+],
+
+PREMIUM: [
+"200+ countries",
+"1000+ purposes",
+"50 languages",
+"AI generator",
+"Notary section",
+"Witness section",
+"Barcode",
+"Digital seal",
+"Cloud backup",
+"Priority support"
+]
+
+};
+
+const PLAN_PRICES = {
+
+India: {
+PRO_MONTH: "₹199",
+PRO_YEAR: "₹1499",
+PREMIUM_MONTH: "₹499",
+PREMIUM_YEAR: "₹3999"
+},
+
+Pakistan: {
+PRO_MONTH: "Rs 799",
+PRO_YEAR: "Rs 5999",
+PREMIUM_MONTH: "Rs 1999",
+PREMIUM_YEAR: "Rs 14999"
+},
+
+UAE: {
+PRO_MONTH: "AED 15",
+PRO_YEAR: "AED 120",
+PREMIUM_MONTH: "AED 39",
+PREMIUM_YEAR: "AED 299"
+},
+
+USA: {
+PRO_MONTH: "$4.99",
+PRO_YEAR: "$39.99",
+PREMIUM_MONTH: "$9.99",
+PREMIUM_YEAR: "$79.99"
+},
+
+UK: {
+PRO_MONTH: "£3.99",
+PRO_YEAR: "£34.99",
+PREMIUM_MONTH: "£8.99",
+PREMIUM_YEAR: "£69.99"
+}
+
+};
 // ====================== DEFAULT PURPOSES ======================
 const DEFAULT_PURPOSES = [
-
-  "Employment Verification",
-  "Education Loan",
-  "Property Transfer",
-  "Name Change",
-  "Birth Certificate Correction",
-  "Loss of Documents",
-  "Income Proof",
-  "Marriage Certificate",
-  "Passport Application",
-  "Court Affidavit"
-
+  
+"Employment Verification",
+"Income Proof",
+"Name Change",
+"Marriage Certificate",
+"Loss of Documents",
+"Passport Application",
+"Court Affidavit",
+"Education Loan",
+"Property Transfer",
+"Birth Certificate Correction",
+"Character Certificate",
+"Gap Certificate",
+"Bonafide Certificate",
+"Single Status",
+"Tenant Verification",
+"Rental Agreement",
+"Legal Heir",
+"Affidavit of Truth",
+"Witness Statement",
+"Loan Declaration"
 ];
-
+  
 // ====================== HELPERS ======================
 
 function escapeHTML(str) {
@@ -239,7 +386,31 @@ function getCountryData() {
   return COUNTRIES[country] || COUNTRIES.India;
 
 }
+// ================= PLAN ENGINE =================
 
+let currentPlan = "FREE";
+
+function isPro() {
+return currentPlan === "PRO";
+}
+
+function isPremium() {
+return currentPlan === "PREMIUM";
+}
+
+function hasFeature(feature) {
+
+if (currentPlan === "PREMIUM") {
+return PLAN_FEATURES.PREMIUM.includes(feature);
+}
+
+if (currentPlan === "PRO") {
+return PLAN_FEATURES.PRO.includes(feature);
+}
+
+return PLAN_FEATURES.FREE.includes(feature);
+
+}
 // ====================== LANGUAGE ENGINE ======================
 
 function getLanguageData() {
@@ -705,7 +876,20 @@ function generateAffidavit() {
 
   const languageData =
   getLanguageData();
+const currentDate =
+new Date().toLocaleDateString();
 
+const currentTime =
+new Date().toLocaleTimeString();
+
+const countryCode =
+countryData.code;
+
+const currency =
+countryData.currency;
+
+const emblem =
+countryData.emblem;
   const fullName =
   escapeHTML(
     document.getElementById(
@@ -889,7 +1073,95 @@ function generateAffidavit() {
       `;
 
       break;
+case "Bengali":
 
+bodyText = `
+আমি
+<b>${fullName}</b>
+পিতা
+<b>${fatherName}</b>
+বয়স
+<b>${age}</b>
+বছর,
+বাসিন্দা
+<b>${address}</b>
+এই হলফনামা
+<b>${purpose}</b>
+জন্য প্রদান করছি।
+`;
+
+break;
+
+case "French":
+
+bodyText = `
+Je,
+<b>${fullName}</b>,
+fils de
+<b>${fatherName}</b>,
+âgé de
+<b>${age}</b>
+ans,
+résidant à
+<b>${address}</b>,
+déclare cet affidavit pour
+<b>${purpose}</b>.
+`;
+
+break;
+
+case "German":
+
+bodyText = `
+Ich,
+<b>${fullName}</b>,
+Sohn von
+<b>${fatherName}</b>,
+<b>${age}</b>
+Jahre alt,
+wohnhaft in
+<b>${address}</b>,
+gebe diese Erklärung für
+<b>${purpose}</b> ab.
+`;
+
+break;
+
+case "Spanish":
+
+bodyText = `
+Yo,
+<b>${fullName}</b>,
+hijo de
+<b>${fatherName}</b>,
+de
+<b>${age}</b>
+años,
+residente en
+<b>${address}</b>,
+declaro esta declaración jurada para
+<b>${purpose}</b>.
+`;
+
+break;
+
+case "Turkish":
+
+bodyText = `
+Ben,
+<b>${fullName}</b>,
+babası
+<b>${fatherName}</b>,
+<b>${age}</b>
+yaşında,
+<b>${address}</b>
+adresinde ikamet eden,
+bu beyanı
+<b>${purpose}</b>
+için veriyorum.
+`;
+
+break;
     default:
 
       bodyText = `
@@ -954,7 +1226,30 @@ function generateAffidavit() {
   ${currentAffidavitNo}
 
   </p>
+<p>
+<b>Date:</b>
+${currentDate}
+</p>
 
+<p>
+<b>Time:</b>
+${currentTime}
+</p>
+
+<p>
+<b>Country Code:</b>
+${countryCode}
+</p>
+
+<p>
+<b>Currency:</b>
+${currency}
+</p>
+
+<p>
+<b>National Emblem:</b>
+${emblem}
+</p>
   <hr>
 
   <p>
@@ -982,7 +1277,30 @@ function generateAffidavit() {
   <br>
 
   Deponent Signature
+<br><br>
 
+<b>Date:</b>
+${currentDate}
+
+<br>
+
+<b>Time:</b>
+${currentTime}
+
+<br>
+
+<b>Country Code:</b>
+${countryCode}
+
+<br>
+
+<b>Currency:</b>
+${currency}
+
+<br>
+
+<b>National Emblem:</b>
+${emblem}
   `;
 
   preview.style.display =
