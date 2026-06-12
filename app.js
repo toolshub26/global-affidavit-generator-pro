@@ -989,3 +989,348 @@ function generateAffidavit() {
   "block";
 
 }
+
+// ====================== PRINT ENGINE ======================
+
+document
+.getElementById("printBtn")
+?.addEventListener(
+
+"click",
+
+() => {
+
+  window.print();
+
+}
+
+);
+
+// ====================== PDF ENGINE ======================
+
+document
+.getElementById("pdfBtn")
+?.addEventListener(
+
+"click",
+
+async () => {
+
+  if (!currentAffidavitNo) {
+
+    alert(
+      "Generate affidavit first."
+    );
+
+    return;
+
+  }
+
+  try {
+
+    const preview =
+    document.getElementById(
+      "preview"
+    );
+
+    const canvas =
+    await html2canvas(
+      preview,
+      {
+        scale:2,
+        backgroundColor:"#ffffff"
+      }
+    );
+
+    const imgData =
+    canvas.toDataURL(
+      "image/png"
+    );
+
+    const { jsPDF } =
+    window.jspdf;
+
+    const pdf =
+    new jsPDF(
+      "p",
+      "mm",
+      "a4"
+    );
+
+    const pdfWidth =
+    210;
+
+    const pdfHeight =
+    canvas.height *
+    pdfWidth /
+    canvas.width;
+
+    pdf.addImage(
+      imgData,
+      "PNG",
+      0,
+      0,
+      pdfWidth,
+      pdfHeight
+    );
+
+    pdf.save(
+
+      `Affidavit_${currentAffidavitNo}.pdf`
+
+    );
+
+  }
+
+  catch (e) {
+
+    console.error(e);
+
+    alert(
+      "PDF generation failed"
+    );
+
+  }
+
+}
+
+);
+
+// ====================== PNG ENGINE ======================
+
+document
+.getElementById("pngBtn")
+?.addEventListener(
+
+"click",
+
+async () => {
+
+  if (!currentAffidavitNo) {
+
+    alert(
+      "Generate affidavit first."
+    );
+
+    return;
+
+  }
+
+  try {
+
+    const preview =
+    document.getElementById(
+      "preview"
+    );
+
+    const canvas =
+    await html2canvas(
+      preview,
+      {
+        scale:2,
+        backgroundColor:"#ffffff"
+      }
+    );
+
+    const link =
+    document.createElement(
+      "a"
+    );
+
+    link.download =
+
+    `Affidavit_${currentAffidavitNo}.png`;
+
+    link.href =
+    canvas.toDataURL();
+
+    link.click();
+
+  }
+
+  catch {
+
+    alert(
+      "PNG export failed"
+    );
+
+  }
+
+}
+
+);
+
+// ====================== SHARE ENGINE ======================
+
+document
+.getElementById("shareBtn")
+?.addEventListener(
+
+"click",
+
+async () => {
+
+  if (!navigator.share) {
+
+    alert(
+      "Sharing not supported."
+    );
+
+    return;
+
+  }
+
+  try {
+
+    await navigator.share({
+
+      title:
+      "Global Affidavit Generator Pro",
+
+      text:
+
+      document
+      .getElementById(
+        "preview"
+      )
+      ?.innerText ||
+
+      ""
+
+    });
+
+  }
+
+  catch (e) {
+
+    console.log(e);
+
+  }
+
+}
+
+);
+
+// ====================== THEME BUTTON ======================
+
+document
+.getElementById("themeBtn")
+?.addEventListener(
+
+"click",
+
+() => {
+
+  document.body
+  .classList
+  .toggle(
+    "light-theme"
+  );
+
+  localStorage.setItem(
+
+    "theme",
+
+    document.body
+    .classList
+    .contains(
+      "light-theme"
+    )
+
+    ?
+
+    "light"
+
+    :
+
+    "dark"
+
+  );
+
+}
+
+);
+
+// ====================== PREVIEW TOGGLE ======================
+
+function setupPreviewToggle() {
+
+  const preview =
+
+  document.getElementById(
+    "preview"
+  );
+
+  if (!preview) return;
+
+  let toggleBtn =
+
+  document.getElementById(
+    "togglePreviewBtn"
+  );
+
+  if (!toggleBtn) {
+
+    toggleBtn =
+    document.createElement(
+      "button"
+    );
+
+    toggleBtn.id =
+    "togglePreviewBtn";
+
+    toggleBtn.textContent =
+
+    "👁 Show Preview";
+
+    document
+    .querySelector(
+      ".container"
+    )
+    ?.appendChild(
+      toggleBtn
+    );
+
+  }
+
+  toggleBtn
+  .addEventListener(
+
+  "click",
+
+  () => {
+
+    if (
+
+      preview.style.display ===
+      "none"
+
+    ) {
+
+      preview.style.display =
+      "block";
+
+      toggleBtn.textContent =
+
+      "📄 Hide Preview";
+
+    }
+
+    else {
+
+      preview.style.display =
+      "none";
+
+      toggleBtn.textContent =
+
+      "👁 Show Preview";
+
+    }
+
+  }
+
+  );
+
+}
+
+
