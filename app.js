@@ -1334,3 +1334,208 @@ function setupPreviewToggle() {
 }
 
 
+// ====================== PWA INSTALL ENGINE ======================
+
+window.addEventListener(
+
+"beforeinstallprompt",
+
+(e) => {
+
+  e.preventDefault();
+
+  deferredPrompt = e;
+
+  const installBtn =
+  document.getElementById(
+    "installBtn"
+  );
+
+  if (installBtn) {
+
+    installBtn.style.display =
+    "block";
+
+  }
+
+}
+
+);
+
+// ====================== INSTALL BUTTON ======================
+
+document
+.getElementById("installBtn")
+?.addEventListener(
+
+"click",
+
+async () => {
+
+  if (!deferredPrompt) {
+
+    alert(
+      "Installation not available."
+    );
+
+    return;
+
+  }
+
+  deferredPrompt.prompt();
+
+  await deferredPrompt.userChoice;
+
+  deferredPrompt = null;
+
+}
+
+);
+
+// ====================== APP INSTALLED ======================
+
+window.addEventListener(
+
+"appinstalled",
+
+() => {
+
+  const installBtn =
+  document.getElementById(
+    "installBtn"
+  );
+
+  if (installBtn) {
+
+    installBtn.style.display =
+    "none";
+
+  }
+
+}
+
+);
+
+// ====================== SERVICE WORKER ======================
+
+if ("serviceWorker" in navigator) {
+
+  window.addEventListener(
+
+  "load",
+
+  () => {
+
+    navigator.serviceWorker
+
+    .register("./sw.js")
+
+    .then(() => {
+
+      console.log(
+      "Service Worker Registered"
+      );
+
+    })
+
+    .catch(err => {
+
+      console.log(
+      "SW Error:",
+      err
+      );
+
+    });
+
+  }
+
+  );
+
+}
+
+// ====================== CLEANUP ENGINE ======================
+
+window.addEventListener(
+
+"beforeunload",
+
+() => {
+
+  if (currentPhotoURL) {
+
+    URL.revokeObjectURL(
+      currentPhotoURL
+    );
+
+  }
+
+}
+
+);
+
+// ====================== DOM READY ENGINE ======================
+
+document.addEventListener(
+
+"DOMContentLoaded",
+
+() => {
+
+  // Restore Theme
+
+  if (
+
+    localStorage.getItem(
+      "theme"
+    )
+
+    ===
+
+    "light"
+
+  ) {
+
+    document.body.classList.add(
+      "light-theme"
+    );
+
+  }
+
+  // Load Purposes
+
+  loadPurposes();
+
+  // Search Engine
+
+  setupPurposeSearch();
+
+  // Plans
+
+  setupPlans();
+
+  // Signature Engine
+
+  initSignaturePad();
+
+  // Preview Engine
+
+  setupPreviewToggle();
+
+  // Generate Button
+
+  document
+  .getElementById(
+    "generateBtn"
+  )
+  ?.addEventListener(
+
+  "click",
+
+  generateAffidavit
+
+  );
+
+}
+
+// ====================== END OF APP.JS ======================
+);
