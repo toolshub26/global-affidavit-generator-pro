@@ -1336,21 +1336,18 @@ Notary Public
 
 // ====================== PRINT ENGINE ======================
 
-document
-.getElementById("printBtn")
-?.addEventListener(
+document.getElementById("printBtn")?.addEventListener(
+  "click",
+  () => {
 
-"click",
+    if (!currentAffidavitNo) {
+      alert("Generate affidavit first.");
+      return;
+    }
 
-() => {
+    window.print();
 
-
-if (!currentAffidavitNo) {
-...
-  window.print();
-
-}
-
+  }
 );
 
 // ====================== PDF ENGINE ======================
@@ -1890,6 +1887,6 @@ document.addEventListener(
   "click",
 
   generateAffidavit
-
-  );
-
+); 
+  
+});
