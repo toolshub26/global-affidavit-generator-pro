@@ -1194,10 +1194,13 @@ break;
   <div class="watermark-overlay">
 
   ${
-    watermarkType === "none"
-      ? ""
-      : watermarkType.toUpperCase()
-  }
+    (currentPlan === "FREE")
+? "FREE VERSION"
+: (
+watermarkType === "none"
+? ""
+: watermarkType.toUpperCase()
+)
 
   </div>
 
@@ -1251,7 +1254,17 @@ ${currency}
 ${emblem}
 </p>
   <hr>
+${isPro() || isPremium()
+? `<hr>
+<p><b>QR Verification:</b> VERIFIED-${currentAffidavitNo}</p>`
+: ""}
+${isPremium()
+? `<p><b>Barcode:</b> BAR-${currentAffidavitNo}</p>`
+: ""}
 
+${isPremium()
+? `<p><b>Digital Seal:</b> AUTHENTIC DOCUMENT</p>`
+: ""}
   <p>
 
   ${bodyText}
@@ -1278,7 +1291,14 @@ ${emblem}
 
   Deponent Signature
 <br><br>
-
+${isPremium()
+? `
+<br><br>
+_________________
+<br>
+Witness Signature
+`
+: ""}
 <b>Date:</b>
 ${currentDate}
 
@@ -1301,6 +1321,14 @@ ${currency}
 
 <b>National Emblem:</b>
 ${emblem}
+${isPremium()
+? `
+<br><br>
+_________________
+<br>
+Notary Public
+`
+: ""}
   `;
 
   preview.style.display =
@@ -1318,6 +1346,9 @@ document
 
 () => {
 
+
+if (!currentAffidavitNo) {
+...
   window.print();
 
 }
@@ -1333,7 +1364,10 @@ document
 "click",
 
 async () => {
-
+if (currentPlan === "FREE") {
+  alert("PDF export available in PRO plan.");
+  return;
+}
   if (!currentAffidavitNo) {
 
     alert(
@@ -1424,6 +1458,11 @@ document
 
 async () => {
 
+    if (currentPlan === "FREE") {
+        alert("PNG export available in PRO plan.");
+        return;
+    }
+
   if (!currentAffidavitNo) {
 
     alert(
@@ -1487,7 +1526,10 @@ document
 "click",
 
 async () => {
-
+if (currentPlan === "FREE") {
+    alert("Sharing available in PRO plan.");
+    return;
+}
   if (!navigator.share) {
 
     alert(
