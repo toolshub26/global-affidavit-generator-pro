@@ -156,8 +156,6 @@ FREE: [
 ],
   
 
-  ],
-
   PRO: [
 
     "Employment Verification",
