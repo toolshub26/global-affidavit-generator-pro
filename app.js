@@ -388,8 +388,6 @@ function getCountryData() {
 }
 // ================= PLAN ENGINE =================
 
-let currentPlan = "FREE";
-
 function isPro() {
 return currentPlan === "PRO";
 }
