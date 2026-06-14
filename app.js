@@ -78,7 +78,40 @@ Australia: {
   emblem: "Commonwealth Star"
 }
 };
+const PLAN_COUNTRIES = {
 
+FREE: [
+"India",
+"Pakistan",
+"UAE",
+"USA",
+"UK"
+],
+
+PRO: [
+"India",
+"Pakistan",
+"UAE",
+"USA",
+"UK",
+"Bangladesh",
+"SaudiArabia",
+"Canada"
+],
+
+PREMIUM: [
+"India",
+"Pakistan",
+"UAE",
+"USA",
+"UK",
+"Bangladesh",
+"SaudiArabia",
+"Canada",
+"Australia"
+]
+
+};
 // ====================== LANGUAGES ======================
 const LANGUAGES = {
 
@@ -128,7 +161,35 @@ Turkish: {
 }
 
 };
+const PLAN_LANGUAGES = {
 
+FREE: [
+"English",
+"Urdu",
+"Hindi"
+],
+
+PRO: [
+"English",
+"Urdu",
+"Hindi",
+"Arabic",
+"French"
+],
+
+PREMIUM: [
+"English",
+"Urdu",
+"Hindi",
+"Arabic",
+"Bengali",
+"French",
+"German",
+"Spanish",
+"Turkish"
+]
+
+};
 // ====================== PLAN PURPOSES ======================
 const PLAN_PURPOSES = {
   
@@ -449,13 +510,15 @@ function setupPlans() {
 
     currentPlan = "FREE";
 
-    populateDropdown(
-      PLAN_PURPOSES.FREE
-    );
+populateCountries();
 
-    alert(
-      "FREE Plan Activated"
-    );
+populateLanguages();
+
+populateDropdown(
+PLAN_PURPOSES.FREE
+);
+
+alert("FREE Plan Activated");
 
   });
 
@@ -465,13 +528,15 @@ function setupPlans() {
 
     currentPlan = "PRO";
 
-    populateDropdown(
-      PLAN_PURPOSES.PRO
-    );
+populateCountries();
 
-    alert(
-      "PRO Plan Activated"
-    );
+populateLanguages();
+
+populateDropdown(
+PLAN_PURPOSES.PRO
+);
+
+alert("PRO Plan Activated");
 
   });
 
@@ -481,13 +546,15 @@ function setupPlans() {
 
     currentPlan = "PREMIUM";
 
-    populateDropdown(
-      PLAN_PURPOSES.PREMIUM
-    );
+populateCountries();
 
-    alert(
-      "PREMIUM Plan Activated"
-    );
+populateLanguages();
+
+populateDropdown(
+PLAN_PURPOSES.PREMIUM
+);
+
+alert("PREMIUM Plan Activated");
 
   });
 
@@ -525,46 +592,51 @@ function populateDropdown(list) {
   });
 
 }
+function populateCountries() {
 
-// ====================== PURPOSE SEARCH ======================
+  const countrySelect =
+  document.getElementById("country");
 
-function setupPurposeSearch() {
+  if (!countrySelect) return;
 
-  const searchBox =
-  document.getElementById(
-    "purposeSearch"
-  );
+  countrySelect.innerHTML = "";
 
-  if (!searchBox) return;
+  PLAN_COUNTRIES[currentPlan]
+  .forEach(country => {
 
-  searchBox.addEventListener(
-    "input",
+    countrySelect.innerHTML +=
+    `<option value="${country}">
+      ${country}
+     </option>`;
 
-    function () {
-
-      const search =
-      this.value
-      .toLowerCase();
-
-      const filtered =
-      PLAN_PURPOSES[currentPlan]
-      .filter(item =>
-
-        item
-        .toLowerCase()
-        .includes(search)
-
-      );
-
-      populateDropdown(
-        filtered
-      );
-
-    }
-
-  );
+  });
 
 }
+
+
+function populateLanguages() {
+
+  const languageSelect =
+  document.getElementById("language");
+
+  if (!languageSelect) return;
+
+  languageSelect.innerHTML = "";
+
+  PLAN_LANGUAGES[currentPlan]
+  .forEach(language => {
+
+    languageSelect.innerHTML +=
+    `<option value="${language}">
+      ${language}
+     </option>`;
+
+  });
+
+}
+// ====================== PURPOSE SEARCH ======================
+
+
 
 // ====================== LOAD PURPOSES ======================
 
@@ -1855,12 +1927,15 @@ document.addEventListener(
 
   // Load Purposes
 
-  loadPurposes();
+  populateCountries();
 
+populateLanguages();
+
+populateDropdown(
+PLAN_PURPOSES[currentPlan]
+);
   // Search Engine
-
-  setupPurposeSearch();
-
+  
   // Plans
 
   setupPlans();
