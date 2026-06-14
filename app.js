@@ -1935,7 +1935,7 @@ populateDropdown(
 PLAN_PURPOSES[currentPlan]
 );
   // Search Engine
-  setupPurposeSearch();
+  
   // Plans
 
   setupPlans();
