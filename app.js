@@ -1891,4 +1891,7 @@ document.addEventListener(
 ); 
   
 });
+
+window.generateAffidavit = generateAffidavit;
+
 alert("APP.JS LOADED");
