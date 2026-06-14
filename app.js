@@ -846,8 +846,6 @@ function initSignaturePad() {
 
 function generateAffidavit() {
 
-alert("START");
-
 if (!validateRequiredFields()) return;
 
   currentAffidavitNo =
@@ -1198,7 +1196,7 @@ watermarkType === "none"
 ? ""
 : watermarkType.toUpperCase()
 )
-
+}
   </div>
 
   ${photoHTML}
@@ -1327,7 +1325,7 @@ Notary Public
 `
 : ""}
   `;
-alert("PREVIEW CREATED");
+  
   preview.style.display =
   "block";
 
@@ -1892,4 +1890,3 @@ document.addEventListener(
 
 window.generateAffidavit = generateAffidavit;
 
-alert("APP.JS LOADED");
