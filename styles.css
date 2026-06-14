@@ -306,21 +306,25 @@ overflow-wrap:break-word;
 
 /* Print */
 
-@media print{
+@media print {
 
-  body{
-    background:white;
-  }
+body *{
+visibility:hidden;
+}
 
-  .container > *{
-    display:none;
-  }
+#preview,
+#preview *{
+visibility:visible;
+}
 
-  #preview{
-    display:block !important;
-    margin:0;
-    box-shadow:none;
-  }
+#preview{
+position:absolute;
+left:0;
+top:0;
+width:100%;
+margin:0;
+box-shadow:none;
+}
 
 }
 
@@ -400,30 +404,23 @@ border:3px solid #111827;
 }
 /* Desktop split layout */
 .main-layout{
-    display:flex;
-    gap:20px;
-    align-items:flex-start;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+@media(max-width:768px){
+
+.main-layout{
+grid-template-columns:1fr;
 }
 
-.form-section{
-    flex:1;
 }
 
-.preview-section{
-    flex:1;
-    position:sticky;
-    top:20px;
-}
-
-/* Mobile layout */
-@media (max-width:768px){
-
-    .main-layout{
-        display:block;
-    }
-
-    .preview-section{
-        position:static;
-    }
-
+.court-logo{
+display:block;
+margin:auto;
+width:80px;
+height:80px;
+object-fit:contain;
+margin-bottom:15px;
 }
