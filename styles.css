@@ -398,3 +398,32 @@ border:3px solid #dc2626;
 background:#ffffff;
 border:3px solid #111827;
 }
+/* Desktop split layout */
+.main-layout{
+    display:flex;
+    gap:20px;
+    align-items:flex-start;
+}
+
+.form-section{
+    flex:1;
+}
+
+.preview-section{
+    flex:1;
+    position:sticky;
+    top:20px;
+}
+
+/* Mobile layout */
+@media (max-width:768px){
+
+    .main-layout{
+        display:block;
+    }
+
+    .preview-section{
+        position:static;
+    }
+
+}
