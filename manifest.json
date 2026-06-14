@@ -1,7 +1,9 @@
 {
   "name": "AGI Legal Pro",
   "short_name": "Affidavit Pro",
+  "description": "Professional affidavit generator with photo, signature, PDF and PWA support.",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#0f172a",
