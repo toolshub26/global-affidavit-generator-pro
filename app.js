@@ -1891,3 +1891,4 @@ document.addEventListener(
 ); 
   
 });
+alert("APP.JS LOADED");
