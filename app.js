@@ -14,18 +14,20 @@ let deferredPrompt = null;
 // ====================== COUNTRIES ======================
 const COUNTRIES = {
 
-  India: {
-    flag: "🇮🇳",
-    code: "IN",
-    currency: "INR",
-    emblem: "Ashoka Emblem"
-  },
+  India:{
+flag:"🇮🇳",
+code:"IN",
+currency:"INR",
+emblem:"Ashoka Emblem",
+logo:"images/india.png"
+}
 
   Pakistan: {
     flag: "🇵🇰",
     code: "PK",
     currency: "PKR",
     emblem: "State Emblem"
+  logo:"images/pakistan.png"
   },
 
   UAE: {
@@ -33,6 +35,7 @@ const COUNTRIES = {
     code: "AE",
     currency: "AED",
     emblem: "UAE Eagle"
+    logo:"images/uae.png"
   },
 
   USA: {
@@ -40,6 +43,7 @@ const COUNTRIES = {
     code: "US",
     currency: "USD",
     emblem: "Great Seal"
+    logo:"images/usa.png"
   },
 
   UK: {
@@ -47,6 +51,7 @@ const COUNTRIES = {
     code: "GB",
     currency: "GBP",
     emblem: "Royal Coat of Arms"
+    logo:"images/uk.png"
   }
 ,
 
@@ -55,6 +60,7 @@ Bangladesh: {
   code: "BD",
   currency: "BDT",
   emblem: "National Emblem"
+  logo:"images/bangladesh.png"
 },
 
 SaudiArabia: {
@@ -62,6 +68,7 @@ SaudiArabia: {
   code: "SA",
   currency: "SAR",
   emblem: "Palm Tree & Swords"
+  logo:"images/saudiArabia.png"
 },
 
 Canada: {
@@ -69,6 +76,7 @@ Canada: {
   code: "CA",
   currency: "CAD",
   emblem: "Canadian Arms"
+  logo:"images/canada.png"
 },
 
 Australia: {
@@ -76,6 +84,7 @@ Australia: {
   code: "AU",
   currency: "AUD",
   emblem: "Commonwealth Star"
+  logo:"images/australia.png"
 }
 };
 const PLAN_COUNTRIES = {
@@ -747,7 +756,10 @@ function initSignaturePad() {
   );
 
   if (!canvas) return;
+const rect = canvas.getBoundingClientRect();
 
+canvas.width = rect.width;
+canvas.height = rect.height;
   const ctx =
   canvas.getContext("2d");
 
@@ -957,6 +969,8 @@ countryData.currency;
 
 const emblem =
 countryData.emblem;
+  const logo =
+countryData.logo;
   const fullName =
   escapeHTML(
     document.getElementById(
@@ -1273,13 +1287,14 @@ watermarkType === "none"
 
   ${photoHTML}
 
-  <h2>
+  <img
+src="${logo}"
+class="court-logo">
 
-  ${countryData.flag}
-
-  ${languageData.title}
-
-  </h2>
+<h2>
+${countryData.flag}
+${languageData.title}
+</h2>
 
   <p>
 
@@ -1945,8 +1960,6 @@ PLAN_PURPOSES[currentPlan]
   initSignaturePad();
 
   // Preview Engine
-
-  setupPreviewToggle();
 
   // Generate Button
 
