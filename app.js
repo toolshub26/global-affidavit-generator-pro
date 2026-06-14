@@ -845,9 +845,12 @@ function initSignaturePad() {
 
 // ====================== GENERATE ENGINE ======================
 
+
 function generateAffidavit() {
 
-  if (!validateRequiredFields()) return;
+alert("START");
+
+if (!validateRequiredFields()) return;
 
   currentAffidavitNo =
   generateAffidavitNumber();
@@ -1326,7 +1329,7 @@ Notary Public
 `
 : ""}
   `;
-
+alert("PREVIEW CREATED");
   preview.style.display =
   "block";
 
