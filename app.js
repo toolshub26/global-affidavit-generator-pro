@@ -523,9 +523,8 @@ populateCountries();
 
 populateLanguages();
 
-populateDropdown(
-PLAN_PURPOSES.FREE
-);
+loadPurposes();
+
 
 alert("FREE Plan Activated");
 
@@ -541,9 +540,7 @@ populateCountries();
 
 populateLanguages();
 
-populateDropdown(
-PLAN_PURPOSES.PRO
-);
+loadPurposes();
 
 alert("PRO Plan Activated");
 
@@ -559,9 +556,7 @@ populateCountries();
 
 populateLanguages();
 
-populateDropdown(
-PLAN_PURPOSES.PREMIUM
-);
+loadPurposes();
 
 alert("PREMIUM Plan Activated");
 
@@ -659,10 +654,7 @@ async function loadPurposes() {
     const data =
     await response.json();
 
-    purposes =
-    Array.isArray(data)
-      ? data
-      : Object.values(data).flat();
+    purposes = data[currentPlan] || DEFAULT_PURPOSES;
 
     if (!purposes.length) {
 
@@ -684,8 +676,8 @@ async function loadPurposes() {
   }
 
   populateDropdown(
-    PLAN_PURPOSES[currentPlan]
-  );
+purposes
+);
 
 }
 
@@ -1946,19 +1938,17 @@ document.addEventListener(
 
 populateLanguages();
 
-populateDropdown(
-PLAN_PURPOSES[currentPlan]
-);
+loadPurposes();
   // Search Engine
   
   // Plans
 
   setupPlans();
 
-  // Signature Engine
-
+  // Signaoture Engine
+ou
   initSignaturePad();
-
+i7oivns
   // Preview Engine
 
   // Generate Button
