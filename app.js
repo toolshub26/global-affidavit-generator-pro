@@ -657,8 +657,12 @@ alert(response.status);
 
 const data =
 await response.json();
+alert(currentPlan);
+alert(Object.keys(data));
 
-    purposes = data[currentPlan] || DEFAULT_PURPOSES;
+purposes = data["FREE"];
+
+alert(purposes.length);
 
     if (!purposes.length) {
 
