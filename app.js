@@ -653,7 +653,7 @@ async function loadPurposes() {
 
     const data =
     await response.json();
-
+alert(currentPlan);
     purposes = data[currentPlan] || DEFAULT_PURPOSES;
 
     if (!purposes.length) {
