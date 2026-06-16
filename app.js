@@ -649,11 +649,15 @@ async function loadPurposes() {
   try {
 
     const response =
-    await fetch("purposes.json");
+await fetch(
+"https://raw.githubusercontent.com/toolshub26/global-affidavit-generator-pro/main/purposes.json"
+);
 
-    const data =
-    await response.json();
-alert(currentPlan);
+alert(response.status);
+
+const data =
+await response.json();
+
     purposes = data[currentPlan] || DEFAULT_PURPOSES;
 
     if (!purposes.length) {
