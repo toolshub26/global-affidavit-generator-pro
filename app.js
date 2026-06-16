@@ -1946,7 +1946,12 @@ document.addEventListener(
 
 populateLanguages();
 
+alert("BEFORE");
+
 loadPurposes();
+
+alert("AFTER");
+
   // Search Engine
   
   // Plans
@@ -1954,9 +1959,9 @@ loadPurposes();
   setupPlans();
 
   // Signaoture Engine
-ou
+  
   initSignaturePad();
-i7oivns
+
   // Preview Engine
 
   // Generate Button
