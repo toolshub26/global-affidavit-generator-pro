@@ -20,13 +20,13 @@ code:"IN",
 currency:"INR",
 emblem:"Ashoka Emblem",
 logo:"images/india.png"
-}
+},
 
   Pakistan: {
     flag: "🇵🇰",
     code: "PK",
     currency: "PKR",
-    emblem: "State Emblem"
+    emblem: "State Emblem",
   logo:"images/pakistan.png"
   },
 
@@ -34,7 +34,7 @@ logo:"images/india.png"
     flag: "🇦🇪",
     code: "AE",
     currency: "AED",
-    emblem: "UAE Eagle"
+    emblem: "UAE Eagle",
     logo:"images/uae.png"
   },
 
@@ -42,7 +42,7 @@ logo:"images/india.png"
     flag: "🇺🇸",
     code: "US",
     currency: "USD",
-    emblem: "Great Seal"
+    emblem: "Great Seal",
     logo:"images/usa.png"
   },
 
@@ -50,16 +50,16 @@ logo:"images/india.png"
     flag: "🇬🇧",
     code: "GB",
     currency: "GBP",
-    emblem: "Royal Coat of Arms"
+    emblem: "Royal Coat of Arms",
     logo:"images/uk.png"
-  }
-,
+  },
+
 
 Bangladesh: {
   flag: "🇧🇩",
   code: "BD",
   currency: "BDT",
-  emblem: "National Emblem"
+  emblem: "National Emblem",
   logo:"images/bangladesh.png"
 },
 
@@ -67,7 +67,7 @@ SaudiArabia: {
   flag: "🇸🇦",
   code: "SA",
   currency: "SAR",
-  emblem: "Palm Tree & Swords"
+  emblem: "Palm Tree & Swords",
   logo:"images/saudiArabia.png"
 },
 
@@ -75,7 +75,7 @@ Canada: {
   flag: "🇨🇦",
   code: "CA",
   currency: "CAD",
-  emblem: "Canadian Arms"
+  emblem: "Canadian Arms",
   logo:"images/canada.png"
 },
 
@@ -83,9 +83,9 @@ Australia: {
   flag: "🇦🇺",
   code: "AU",
   currency: "AUD",
-  emblem: "Commonwealth Star"
+  emblem: "Commonwealth Star",
   logo:"images/australia.png"
-}
+},
 };
 const PLAN_COUNTRIES = {
 
@@ -118,7 +118,7 @@ PREMIUM: [
 "SaudiArabia",
 "Canada",
 "Australia"
-]
+],
 
 };
 // ====================== LANGUAGES ======================
@@ -167,7 +167,7 @@ Spanish: {
 Turkish: {
   dir: "ltr",
   title: "YEMİNLİ BEYAN"
-}
+},
 
 };
 const PLAN_LANGUAGES = {
@@ -196,7 +196,7 @@ PREMIUM: [
 "German",
 "Spanish",
 "Turkish"
-]
+],
 
 };
 // ====================== PLAN PURPOSES ======================
@@ -270,7 +270,7 @@ FREE: [
     "Divorce Declaration",
     "Property Mutation"
 
-  ]
+  ],
 
 };
 
@@ -321,7 +321,7 @@ PREMIUM: [
 "Digital seal",
 "Cloud backup",
 "Priority support"
-]
+],
 
 };
 
@@ -360,7 +360,7 @@ PRO_MONTH: "£3.99",
 PRO_YEAR: "£34.99",
 PREMIUM_MONTH: "£8.99",
 PREMIUM_YEAR: "£69.99"
-}
+},
 
 };
 // ====================== DEFAULT PURPOSES ======================
@@ -653,16 +653,12 @@ await fetch(
 "https://raw.githubusercontent.com/toolshub26/global-affidavit-generator-pro/main/purposes.json"
 );
 
-alert(response.status);
 
 const data =
 await response.json();
-alert(currentPlan);
-alert(Object.keys(data));
 
-purposes = data["FREE"];
+purposes = data[currentPlan];
 
-alert(purposes.length);
 
     if (!purposes.length) {
 
@@ -1946,11 +1942,9 @@ document.addEventListener(
 
 populateLanguages();
 
-alert("BEFORE");
 
 loadPurposes();
 
-alert("AFTER");
 
   // Search Engine
   
