@@ -1346,7 +1346,14 @@ ${isPremium()
 : ""}
   <p>
 
-  ${bodyText}
+  ${renderAffidavit({
+language,
+purpose,
+fullName,
+fatherName,
+age,
+address
+})}
 
   </p>
 
