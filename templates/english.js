@@ -36,7 +36,37 @@ verificationTitle: "VERIFICATION",
 verification: `
 I verify that the contents of this affidavit are true and correct to the best of my knowledge and belief and nothing material has been concealed therefrom.
 `
+},
 
-}
+name_change: {
 
+title: "AFFIDAVIT FOR CHANGE OF NAME",
+
+intro: `
+I, {fullName}, son/daughter of {fatherName},
+aged {age} years, residing at {address},
+do hereby solemnly affirm and declare as under:
+`,
+
+paragraphs: [
+
+`That my previous name was {oldName}.`,
+
+`That I have changed my name to {newName}.`,
+
+`That both names belong to one and the same person.`,
+
+`That I shall hereafter be known by the name {newName}.`,
+
+`That this declaration is made for all legal purposes.`
+
+],
+
+verificationTitle: "VERIFICATION",
+
+verification: `
+I verify that the contents of this affidavit are true and correct.
+`
+
+},
 };
