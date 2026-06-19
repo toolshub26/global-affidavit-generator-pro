@@ -640,8 +640,25 @@ function populateLanguages() {
 
 }
 // ====================== PURPOSE SEARCH ======================
-
-
+let purposes = [];
+const DEFAULT_PURPOSES = [
+"Name Change",
+"Birth Affidavit",
+"Marriage Affidavit",
+"Income Affidavit",
+"Address Proof",
+"Residence Proof",
+"Passport Loss",
+"Gap Certificate",
+"Single Status Certificate",
+"Employment Affidavit",
+"Bank Affidavit",
+"Property Affidavit",
+"Vehicle Transfer",
+"Joint Affidavit",
+"Death Affidavit",
+"No Objection Certificate"
+];
 
 // ====================== LOAD PURPOSES ======================
 
@@ -649,23 +666,15 @@ async function loadPurposes() {
 
   try {
 
-    const response =
-await fetch(
-"https://raw.githubusercontent.com/toolshub26/global-affidavit-generator-pro/main/purposes.json"
-);
+    purposes = [...DEFAULT_PURPOSES];
 
 
-const data =
-await response.json();
-
-purposes = data[currentPlan];
 
 
-    if (!purposes.length) {
 
-      throw new Error();
 
-    }
+
+    
 
   }
 
