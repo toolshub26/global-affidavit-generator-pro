@@ -1375,28 +1375,7 @@ _________________
 Witness Signature
 `
 : ""}
-<b>Date:</b>
-${currentDate}
 
-<br>
-
-<b>Time:</b>
-${currentTime}
-
-<br>
-
-<b>Country Code:</b>
-${countryCode}
-
-<br>
-
-<b>Currency:</b>
-${currency}
-
-<br>
-
-<b>National Emblem:</b>
-${emblem}
 ${isPremium()
 ? `
 <br><br>
