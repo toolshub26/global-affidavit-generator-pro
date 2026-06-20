@@ -649,7 +649,11 @@ async function loadPurposes() {
 
   try {
 
-    purposes = [...PLAN_PURPOSES[currentPlan]];
+    purposes = [...(PLAN_PURPOSES[currentPlan] || DEFAULT_PURPOSES)];
+
+console.log("currentPlan =", currentPlan);
+console.log("PLAN_PURPOSES[currentPlan] =", PLAN_PURPOSES[currentPlan]);
+console.log("purposes =", purposes);
 
 
 
