@@ -1,4 +1,4 @@
-import { renderAffidavit } from "./js/renderEngine.js";
+//import { renderAffidavit } from "./js/renderEngine.js";
 // ========================================
 // GLOBAL AFFIDAVIT GENERATOR PRO V7
 // WORLD EDITION
@@ -1940,3 +1940,6 @@ loadPurposes();
 
 window.generateAffidavit = generateAffidavit;
 
+function renderAffidavit() {
+  return "";
+}
