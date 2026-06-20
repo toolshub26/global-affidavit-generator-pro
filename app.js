@@ -362,11 +362,10 @@ PRO_YEAR: "£34.99",
 PREMIUM_MONTH: "£8.99",
 PREMIUM_YEAR: "£69.99"
 },
-
-};
 // ====================== DEFAULT PURPOSES ======================
+
 const DEFAULT_PURPOSES = [
-  
+
 "Employment Verification",
 "Income Proof",
 "Name Change",
@@ -387,8 +386,10 @@ const DEFAULT_PURPOSES = [
 "Affidavit of Truth",
 "Witness Statement",
 "Loan Declaration"
+
 ];
-  
+};
+
 // ====================== HELPERS ======================
 
 function escapeHTML(str) {
@@ -640,25 +641,7 @@ function populateLanguages() {
 
 }
 // ====================== PURPOSE SEARCH ======================
-let purposes = [];
-const DEFAULT_PURPOSES = [
-"Name Change",
-"Birth Affidavit",
-"Marriage Affidavit",
-"Income Affidavit",
-"Address Proof",
-"Residence Proof",
-"Passport Loss",
-"Gap Certificate",
-"Single Status Certificate",
-"Employment Affidavit",
-"Bank Affidavit",
-"Property Affidavit",
-"Vehicle Transfer",
-"Joint Affidavit",
-"Death Affidavit",
-"No Objection Certificate"
-];
+
 
 // ====================== LOAD PURPOSES ======================
 
