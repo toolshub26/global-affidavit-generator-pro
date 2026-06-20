@@ -666,7 +666,7 @@ async function loadPurposes() {
 
   try {
 
-    purposes = [...DEFAULT_PURPOSES];
+    purposes = [...PLAN_PURPOSES[currentPlan]];
 
 
 
@@ -1344,10 +1344,8 @@ ${emblem}
   <hr>
 ${isPro() || isPremium()
 ? `<hr>
-<p><b>QR Verification:</b> VERIFIED-${currentAffidavitNo}</p>`
-: ""}
-${isPremium()
-? `<p><b>Barcode:</b> BAR-${currentAffidavitNo}</p>`
+<p><b>QR Verification:</b></p>
+<div id="qrcode"></div>`
 : ""}
 
 ${isPremium()
@@ -1428,6 +1426,22 @@ Notary Public
   
   preview.style.display =
   "block";
+if (isPro() || isPremium()) {
+
+  const qrBox =
+  document.getElementById("qrcode");
+
+  if (qrBox) {
+
+    qrBox.innerHTML = "";
+
+    new QRCode(qrBox, {
+      text: currentAffidavitNo,
+      width: 100,
+      height: 100
+    });
+
+  }
 
 }
 
@@ -1870,40 +1884,8 @@ window.addEventListener(
 
 // ====================== SERVICE WORKER ======================
 
-if ("serviceWorker" in navigator) {
 
-  window.addEventListener(
 
-  "load",
-
-  () => {
-
-    navigator.serviceWorker
-
-    .register("./sw.js")
-
-    .then(() => {
-
-      console.log(
-      "Service Worker Registered"
-      );
-
-    })
-
-    .catch(err => {
-
-      console.log(
-      "SW Error:",
-      err
-      );
-
-    });
-
-  }
-
-  );
-
-}
 
 // ====================== CLEANUP ENGINE ======================
 
