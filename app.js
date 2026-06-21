@@ -1877,17 +1877,10 @@ populateLanguages();
 loadPurposes();
 
 alert("After loadPurposes");
-  if (
-
-    localStorage.getItem(
-      "theme"
-    )
-
-    ===
-
-    "light"
-
-  ) {
+  
+  if (localStorage.getItem("theme") === "light") {
+    document.body.classList.add("light-theme");
+}
 
     document.body.classList.add(
       "light-theme"
