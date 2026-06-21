@@ -577,6 +577,7 @@ function populateDropdown(list) {
 
   if (!dropdown) return;
 console.log("Dropdown found =", dropdown);
+  alert("populateDropdown running");
 console.log("Dropdown list =", list);
   dropdown.innerHTML =
   `<option value="">
