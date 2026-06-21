@@ -362,6 +362,7 @@ PRO_YEAR: "£34.99",
 PREMIUM_MONTH: "£8.99",
 PREMIUM_YEAR: "£69.99"
 },
+  };
 // ====================== DEFAULT PURPOSES ======================
 
 const DEFAULT_PURPOSES = [
@@ -388,7 +389,6 @@ const DEFAULT_PURPOSES = [
 "Loan Declaration"
 
 ];
-};
 
 // ====================== HELPERS ======================
 
