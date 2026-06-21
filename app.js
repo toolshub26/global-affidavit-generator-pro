@@ -1867,9 +1867,16 @@ document.addEventListener(
 "DOMContentLoaded",
 
 () => {
-
+alert("DOM loaded");
   // Restore Theme
+alert("Before loadPurposes");
 
+populateCountries();
+populateLanguages();
+
+loadPurposes();
+
+alert("After loadPurposes");
   if (
 
     localStorage.getItem(
