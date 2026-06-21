@@ -648,41 +648,27 @@ function populateLanguages() {
 
 async function loadPurposes() {
 
+  alert(currentPlan);
+
   try {
 
     purposes = [...(PLAN_PURPOSES[currentPlan] || DEFAULT_PURPOSES)];
 
-console.log("currentPlan =", currentPlan);
-console.log("PLAN_PURPOSES[currentPlan] =", PLAN_PURPOSES[currentPlan]);
-console.log("purposes =", purposes);
-
-
-
-
-
-
-
-    
+    alert(purposes.length);
 
   }
 
   catch {
 
-    console.log(
-      "Using default purposes"
-    );
+    alert("catch");
 
-    purposes =
-    [...DEFAULT_PURPOSES];
+    purposes = [...DEFAULT_PURPOSES];
 
   }
 
-  populateDropdown(
-purposes
-);
+  populateDropdown(purposes);
 
 }
-
 // ====================== VALIDATION ENGINE ======================
 
 function validateRequiredFields() {
