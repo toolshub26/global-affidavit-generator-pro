@@ -1,4 +1,5 @@
 //import { renderAffidavit } from "./js/renderEngine.js";
+alert("APP.JS STARTED");
 // ========================================
 // GLOBAL AFFIDAVIT GENERATOR PRO V7
 // WORLD EDITION
