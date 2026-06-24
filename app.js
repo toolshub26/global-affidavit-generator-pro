@@ -1864,67 +1864,23 @@ window.addEventListener(
 
 // ====================== DOM READY ENGINE ======================
 
-document.addEventListener(
+document.addEventListener("DOMContentLoaded", () => {
 
-"DOMContentLoaded",
-
-() => {
-alert("DOM loaded");
-  // Restore Theme
-alert("Before loadPurposes");
-
-populateCountries();
-populateLanguages();
-
-loadPurposes();
-
-alert("After loadPurposes");
-  
   if (localStorage.getItem("theme") === "light") {
     document.body.classList.add("light-theme");
-}
-
-    document.body.classList.add(
-      "light-theme"
-    );
-
   }
 
-  // Load Purposes
-
   populateCountries();
-
-populateLanguages();
-
-
-loadPurposes();
-
-
-  // Search Engine
-  
-  // Plans
+  populateLanguages();
+  loadPurposes();
 
   setupPlans();
-
-  // Signaoture Engine
-  
   initSignaturePad();
 
-  // Preview Engine
-
-  // Generate Button
-
   document
-  .getElementById(
-    "generateBtn"
-  )
-  ?.addEventListener(
+    .getElementById("generateBtn")
+    ?.addEventListener("click", generateAffidavit);
 
-  "click",
-
-  generateAffidavit
-); 
-  
 });
 
 window.generateAffidavit = generateAffidavit;
@@ -1932,3 +1888,5 @@ window.generateAffidavit = generateAffidavit;
 function renderAffidavit() {
   return "";
 }
+
+
