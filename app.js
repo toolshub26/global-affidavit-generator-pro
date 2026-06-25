@@ -584,7 +584,7 @@ console.log("Dropdown list =", list);
   `<option value="">
   Select Purpose
   </option>`;
-
+alert("List size = " + list.length);
   list.forEach(item => {
 
     const option =
