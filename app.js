@@ -1884,7 +1884,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 window.generateAffidavit = generateAffidavit;
-
+loadPurposes();
+populateDropdown(PLAN_PURPOSES.FREE);
 function renderAffidavit() {
   return "";
 }
