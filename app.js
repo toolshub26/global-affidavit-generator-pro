@@ -667,7 +667,7 @@ async function loadPurposes() {
     purposes = [...DEFAULT_PURPOSES];
 
   }
-
+alert(JSON.stringify(purposes));
   populateDropdown(purposes);
 
 }
