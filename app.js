@@ -1872,8 +1872,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   populateCountries();
   populateLanguages();
-  loadPurposes();
-
+  //loadPurposes();
+populateDropdown([
+  "Employment Verification",
+  "Income Proof",
+  "Name Change"
+]);
   setupPlans();
   initSignaturePad();
 
@@ -1884,8 +1888,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 window.generateAffidavit = generateAffidavit;
-loadPurposes();
-populateDropdown(PLAN_PURPOSES.FREE);
+//loadPurposes();
+//populateDropdown(PLAN_PURPOSES.FREE);
 function renderAffidavit() {
   return "";
 }
