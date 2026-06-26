@@ -576,8 +576,12 @@ function populateDropdown(list) {
     "purposeDropdown"
   );
 
-  if (!dropdown) return;
-console.log("Dropdown found =", dropdown);
+  if (!dropdown) {
+    alert("dropdown = NULL");
+    return;
+}
+
+alert(dropdown);
   alert("populateDropdown running");
 console.log("Dropdown list =", list);
   dropdown.innerHTML =
